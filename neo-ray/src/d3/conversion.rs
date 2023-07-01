@@ -1,8 +1,8 @@
 use glam::Vec3;
 
-use crate::d3::def::NeoLineRay3D;
+use crate::d3::def::Ray3D;
 
-impl NeoLineRay3D {
+impl Ray3D {
     pub fn tuple(&self) -> (Vec3, Vec3) {
         (self.origin, self.direction)
     }

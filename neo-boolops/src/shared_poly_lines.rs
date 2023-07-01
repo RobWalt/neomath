@@ -3,8 +3,8 @@ use geo_glam_interop::neo_float::NeoFloatConversions;
 use geo_glam_interop::to_glam::ConvertToGlam;
 use glam::Vec2;
 use neo_float::NeoFloat;
-use neo_line_segment::d2::def::NeoLineSegment2D;
-use neo_line_segment::d2::intersection::NeoLine2DIntersection;
+use neo_line_segment::d2::def::LineSegment2D;
+use neo_line_segment::d2::intersection::Line2DIntersection;
 
 // Magic Numbers
 const MINIMUM_OVERLAP_LENGTH: f32 = 0.1;
@@ -41,10 +41,10 @@ fn close_to_normal_points<F: NeoFloat>(other_points: &[geo::Coord<F>], point: Ve
     })
 }
 
-fn line_to_line_segment<F: NeoFloat>(line: geo::Line<F>) -> NeoLineSegment2D {
+fn line_to_line_segment<F: NeoFloat>(line: geo::Line<F>) -> LineSegment2D {
     let start = line.start.to_f64_version().to_glam().as_vec2();
     let end = line.end.to_f64_version().to_glam().as_vec2();
-    NeoLineSegment2D::new(start, end)
+    LineSegment2D::new(start, end)
 }
 
 /// Intersect two indexed lines
@@ -67,14 +67,14 @@ fn intersect_indexed_lines<F: NeoFloat>(
     let l1 = line_to_line_segment(line1);
     let l2 = line_to_line_segment(line2);
     match l1.intersection(&l2) {
-        NeoLine2DIntersection::IntersectionInBoth(point)
+        Line2DIntersection::IntersectionInBoth(point)
             if !l1.is_endpoint(point)
                 && !l2.is_endpoint(point)
                 && !close_to_normal_points(other_points, point) =>
         {
             Some((idx1, idx2, line1, line2, IntersectionKind::Point(point)))
         }
-        NeoLine2DIntersection::CollinearOverlap(line)
+        Line2DIntersection::CollinearOverlap(line)
             if line.overlap().length() > MINIMUM_OVERLAP_LENGTH && l1 != l2 && l1.flip() != l2 =>
         {
             Some((
@@ -95,7 +95,7 @@ enum IntersectionKind {
     /// Intersection is a point
     Point(Vec2),
     /// Intersection is a overlap (line)
-    Overlap(NeoLineSegment2D),
+    Overlap(LineSegment2D),
 }
 
 /// Index type that points to a specific line in a polygon (which needs to be replaced)

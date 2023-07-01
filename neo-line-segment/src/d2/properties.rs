@@ -1,8 +1,8 @@
 use glam::Vec2;
 
-use crate::d2::def::NeoLineSegment2D;
+use crate::d2::def::LineSegment2D;
 
-impl NeoLineSegment2D {
+impl LineSegment2D {
     pub fn direction(&self) -> Vec2 {
         self.dst - self.src
     }

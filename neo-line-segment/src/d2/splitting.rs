@@ -1,8 +1,8 @@
 use glam::Vec2;
 
-use crate::d2::def::NeoLineSegment2D;
+use crate::d2::def::LineSegment2D;
 
-impl NeoLineSegment2D {
+impl LineSegment2D {
     pub fn split_at_percent(&self, percentage: f32) -> Option<(Self, Self)> {
         (0.0..=1.0).contains(&percentage).then(|| {
             let split_point = self.inject_scalar(percentage);

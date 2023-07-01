@@ -1,8 +1,8 @@
 use glam::Vec3;
 
-use crate::d3::def::NeoLineRay3D;
+use crate::d3::def::Ray3D;
 
-impl NeoLineRay3D {
+impl Ray3D {
     pub fn offset_origin_by(&self, offset: Vec3) -> Self {
         Self::from((self.origin + offset, self.direction))
     }

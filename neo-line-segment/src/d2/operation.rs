@@ -1,8 +1,8 @@
 use glam::Vec2;
 
-use crate::d2::def::NeoLineSegment2D;
+use crate::d2::def::LineSegment2D;
 
-impl NeoLineSegment2D {
+impl LineSegment2D {
     pub fn offset_line_by(&self, offset: Vec2) -> Self {
         Self::from(self.array().map(|v| v + offset))
     }

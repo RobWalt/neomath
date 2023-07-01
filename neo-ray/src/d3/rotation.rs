@@ -1,8 +1,8 @@
 use glam::Quat;
 
-use crate::d3::def::NeoLineRay3D;
+use crate::d3::def::Ray3D;
 
-impl NeoLineRay3D {
+impl Ray3D {
     fn angle_between(&self, other: &Self) -> f32 {
         self.direction().angle_between(other.direction())
     }
@@ -14,15 +14,15 @@ impl NeoLineRay3D {
     }
 
     pub fn angle_xaxis(&self) -> Quat {
-        self.aligning_rotation_between(&NeoLineRay3D::X)
+        self.aligning_rotation_between(&Ray3D::X)
     }
 
     pub fn angle_yaxis(&self) -> Quat {
-        self.aligning_rotation_between(&NeoLineRay3D::Y)
+        self.aligning_rotation_between(&Ray3D::Y)
     }
 
     pub fn angle_zaxis(&self) -> Quat {
-        self.aligning_rotation_between(&NeoLineRay3D::Z)
+        self.aligning_rotation_between(&Ray3D::Z)
     }
 
     pub fn rotate(&self, quat: Quat) -> Self {
@@ -39,7 +39,7 @@ fn rotation_works() {
     use glam::Quat;
     use glam::Vec3;
 
-    let l = NeoLineRay3D::X;
+    let l = Ray3D::X;
     let axis = Vec3::Y;
     let angle = 90.0_f32.to_radians();
     let quat = Quat::from_axis_angle(axis, angle);

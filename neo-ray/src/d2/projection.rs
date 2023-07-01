@@ -1,8 +1,8 @@
 use glam::Vec2;
 
-use crate::d2::def::NeoLineRay2D;
+use crate::d2::def::Ray2D;
 
-impl NeoLineRay2D {
+impl Ray2D {
     pub fn project_point(&self, point: Vec2) -> Vec2 {
         point.project_onto(self.direction())
     }
@@ -15,6 +15,6 @@ impl NeoLineRay2D {
 #[test]
 fn projection_works() {
     let p = Vec2::Y;
-    let l = NeoLineRay2D::ONE;
+    let l = Ray2D::ONE;
     assert_eq!(l.project_point(p), Vec2::ONE * 0.5);
 }

@@ -1,9 +1,9 @@
 use glam::Vec2;
 use neo_aabb::d2::def::AABB2D;
 
-use crate::d2::def::NeoLineSegment2D;
+use crate::d2::def::LineSegment2D;
 
-impl NeoLineSegment2D {
+impl LineSegment2D {
     pub fn min_x(&self) -> f32 {
         self.src.x.min(self.dst.x)
     }
@@ -21,7 +21,7 @@ impl NeoLineSegment2D {
     }
 }
 
-impl NeoLineSegment2D {
+impl LineSegment2D {
     pub fn aabb(&self) -> AABB2D {
         AABB2D::new(
             Vec2::new(self.min_x(), self.min_y()),

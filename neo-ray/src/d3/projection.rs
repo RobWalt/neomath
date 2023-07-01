@@ -1,8 +1,8 @@
 use glam::Vec3;
 
-use crate::d3::def::NeoLineRay3D;
+use crate::d3::def::Ray3D;
 
-impl NeoLineRay3D {
+impl Ray3D {
     pub fn project_point(&self, point: Vec3) -> Vec3 {
         point.project_onto(self.direction())
     }
@@ -15,6 +15,6 @@ impl NeoLineRay3D {
 #[test]
 fn projection_works() {
     let p = Vec3::Y;
-    let l = NeoLineRay3D::ONE;
+    let l = Ray3D::ONE;
     assert_eq!(l.project_point(p), Vec3::ONE / 3.0);
 }

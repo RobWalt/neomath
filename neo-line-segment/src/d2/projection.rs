@@ -1,8 +1,8 @@
 use glam::Vec2;
 
-use crate::d2::def::NeoLineSegment2D;
+use crate::d2::def::LineSegment2D;
 
-impl NeoLineSegment2D {
+impl LineSegment2D {
     pub fn project_point(&self, point: Vec2) -> Vec2 {
         point.project_onto(self.direction())
     }
@@ -34,20 +34,20 @@ impl NeoLineSegment2D {
 #[test]
 fn projection_works() {
     let p = Vec2::Y;
-    let l = NeoLineSegment2D::UNIT_ONE;
+    let l = LineSegment2D::UNIT_ONE;
     assert_eq!(l.project_point(p), Vec2::ONE * 0.5);
 }
 
 #[test]
 fn scalar_of_works_half() {
     let p = Vec2::ONE;
-    let l = NeoLineSegment2D::UNIT_X.scale_dst_by(2.0);
+    let l = LineSegment2D::UNIT_X.scale_dst_by(2.0);
     assert_eq!(l.scalar_of(p), 0.5);
 }
 
 #[test]
 fn scalar_of_works_two_thirds() {
     let p = Vec2::ONE * 1.5;
-    let l = NeoLineSegment2D::UNIT_X.scale_dst_by(2.0);
+    let l = LineSegment2D::UNIT_X.scale_dst_by(2.0);
     assert_eq!(l.scalar_of(p), 0.75);
 }

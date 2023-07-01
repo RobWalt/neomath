@@ -1,8 +1,8 @@
 use glam::Vec2;
 
-use crate::d2::def::NeoLineSegment2D;
+use crate::d2::def::LineSegment2D;
 
-impl NeoLineSegment2D {
+impl LineSegment2D {
     pub fn angle_xaxis(&self) -> f32 {
         self.direction().angle_between(Vec2::X)
     }
@@ -29,11 +29,11 @@ impl NeoLineSegment2D {
 
 #[test]
 fn rotation_around_works() {
-    let l = NeoLineSegment2D::UNIT_ONE.offset_line_by(Vec2::ONE);
+    let l = LineSegment2D::UNIT_ONE.offset_line_by(Vec2::ONE);
     let p = Vec2::ONE;
     let angle = 90.0_f32.to_radians();
     assert_eq!(
         l.ccw_rotate_around(p, angle),
-        NeoLineSegment2D::new(Vec2::ONE, Vec2::Y * 2.0)
+        LineSegment2D::new(Vec2::ONE, Vec2::Y * 2.0)
     );
 }

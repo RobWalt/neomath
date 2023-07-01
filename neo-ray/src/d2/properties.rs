@@ -1,8 +1,8 @@
 use glam::Vec2;
 
-use crate::d2::def::NeoLineRay2D;
+use crate::d2::def::Ray2D;
 
-impl NeoLineRay2D {
+impl Ray2D {
     pub fn direction(&self) -> Vec2 {
         self.direction
     }

@@ -1,9 +1,9 @@
 use geo_glam_interop::to_geo::ConvertToGeo;
 use glam::Vec2;
 
-use crate::d2::def::NeoLineRay2D;
+use crate::d2::def::Ray2D;
 
-impl NeoLineRay2D {
+impl Ray2D {
     pub fn tuple(&self) -> (Vec2, Vec2) {
         (self.origin, self.direction)
     }

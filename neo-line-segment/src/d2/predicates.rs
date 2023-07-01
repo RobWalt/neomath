@@ -1,9 +1,9 @@
 use glam::Vec2;
 
 use crate::d2::constants::NEO_LINE_SEGMENT_2D_EPS;
-use crate::d2::def::NeoLineSegment2D;
+use crate::d2::def::LineSegment2D;
 
-impl NeoLineSegment2D {
+impl LineSegment2D {
     pub fn is_degenerated(&self) -> bool {
         self.src == self.dst
     }
@@ -28,7 +28,7 @@ impl NeoLineSegment2D {
 #[test]
 fn is_point_on_line_endpoint_works() {
     let p = Vec2::X;
-    let l = NeoLineSegment2D::UNIT_X.scale_dst_by(2.0);
+    let l = LineSegment2D::UNIT_X.scale_dst_by(2.0);
     assert_eq!(
         l.is_point_on_line(p),
         true,
@@ -40,7 +40,7 @@ fn is_point_on_line_endpoint_works() {
 #[test]
 fn is_point_on_line_epsilon_works() {
     let p = Vec2::X + f32::EPSILON;
-    let l = NeoLineSegment2D::UNIT_X.scale_dst_by(2.0);
+    let l = LineSegment2D::UNIT_X.scale_dst_by(2.0);
     assert_eq!(
         l.is_point_on_line(p),
         true,
@@ -51,7 +51,7 @@ fn is_point_on_line_epsilon_works() {
 
 #[test]
 fn is_point_on_line_tilted_works() {
-    let l = NeoLineSegment2D::new(Vec2::ZERO, Vec2::new(1.0, 0.33));
+    let l = LineSegment2D::new(Vec2::ZERO, Vec2::new(1.0, 0.33));
     let p = l.src + l.direction() * 0.33;
     assert_eq!(
         l.is_point_on_line(p),

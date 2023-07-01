@@ -1,9 +1,9 @@
 use glam::Vec3;
 
 use crate::d3::constants::NEO_LINE_RAY_3D_EPS;
-use crate::d3::def::NeoLineRay3D;
+use crate::d3::def::Ray3D;
 
-impl NeoLineRay3D {
+impl Ray3D {
     pub fn is_degenerated(&self) -> bool {
         self.direction == Vec3::ZERO
     }
@@ -22,7 +22,7 @@ impl NeoLineRay3D {
 #[test]
 fn is_point_on_line_works_endpoint() {
     let p = Vec3::X;
-    let l = NeoLineRay3D::X;
+    let l = Ray3D::X;
     assert_eq!(
         l.is_point_on_ray(p),
         true,
@@ -34,7 +34,7 @@ fn is_point_on_line_works_endpoint() {
 #[test]
 fn is_point_on_line_works_epsilon() {
     let p = Vec3::X * (1.0 + f32::EPSILON);
-    let l = NeoLineRay3D::X;
+    let l = Ray3D::X;
     assert_eq!(
         l.is_point_on_ray(p),
         true,
@@ -45,7 +45,7 @@ fn is_point_on_line_works_epsilon() {
 
 #[test]
 fn is_point_on_line_works_tilted() {
-    let l = NeoLineRay3D::new(Vec3::ZERO, Vec3::new(1.0, 0.33, 1.0));
+    let l = Ray3D::new(Vec3::ZERO, Vec3::new(1.0, 0.33, 1.0));
     let p = l.origin + l.direction() * 0.33;
     assert_eq!(
         l.is_point_on_ray(p),

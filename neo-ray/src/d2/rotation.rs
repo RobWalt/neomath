@@ -1,8 +1,8 @@
 use glam::Vec2;
 
-use crate::d2::def::NeoLineRay2D;
+use crate::d2::def::Ray2D;
 
-impl NeoLineRay2D {
+impl Ray2D {
     pub fn angle_xaxis(&self) -> f32 {
         self.direction().angle_between(Vec2::X)
     }
@@ -30,7 +30,7 @@ impl NeoLineRay2D {
 #[test]
 fn rotation_works() {
     use crate::d2::constants::NEO_LINE_RAY_2D_EPS;
-    let l = NeoLineRay2D::X;
+    let l = Ray2D::X;
     let angle = 90.0_f32.to_radians();
     let rotated = l.ccw_rotate(angle);
     assert!(rotated.origin.abs_diff_eq(Vec2::ZERO, NEO_LINE_RAY_2D_EPS));

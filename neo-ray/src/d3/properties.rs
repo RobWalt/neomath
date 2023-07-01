@@ -1,9 +1,9 @@
 use glam::Vec3;
 use neo_plane::Plane;
 
-use crate::d3::def::NeoLineRay3D;
+use crate::d3::def::Ray3D;
 
-impl NeoLineRay3D {
+impl Ray3D {
     pub fn direction(&self) -> Vec3 {
         self.direction
     }

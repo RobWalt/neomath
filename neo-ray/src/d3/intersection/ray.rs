@@ -2,10 +2,10 @@
 use glam::{Mat2, Vec2, Vec3};
 
 use crate::d3::constants::NEO_LINE_RAY_3D_EPS;
-use crate::d3::def::NeoLineRay3D;
+use crate::d3::def::Ray3D;
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-pub enum NeoRayRayIntersection {
+pub enum RayRayIntersection {
     Parallel,
     Collinear,
     Intersection(Vec3),
@@ -37,8 +37,8 @@ impl ZeroDim {
     }
 }
 
-impl NeoLineRay3D {
-    pub fn intersection_ray(&self, other: &Self) -> NeoRayRayIntersection {
+impl Ray3D {
+    pub fn intersection_ray(&self, other: &Self) -> RayRayIntersection {
         if self.is_parallel_to(other) {
             self.classify_parallel_relation_to(other)
         } else {
@@ -46,18 +46,18 @@ impl NeoLineRay3D {
         }
     }
 
-    fn classify_parallel_relation_to(&self, other: &Self) -> NeoRayRayIntersection {
+    fn classify_parallel_relation_to(&self, other: &Self) -> RayRayIntersection {
         if self.is_point_on_ray(other.origin) {
-            NeoRayRayIntersection::Collinear
+            RayRayIntersection::Collinear
         } else {
-            NeoRayRayIntersection::Parallel
+            RayRayIntersection::Parallel
         }
     }
 
-    fn classify_intersecting_relation_to(&self, other: &Self) -> NeoRayRayIntersection {
+    fn classify_intersecting_relation_to(&self, other: &Self) -> RayRayIntersection {
         match self.calculate_intersection_point(other) {
-            Some(intersection_point) => NeoRayRayIntersection::Intersection(intersection_point),
-            None => NeoRayRayIntersection::Skewed,
+            Some(intersection_point) => RayRayIntersection::Intersection(intersection_point),
+            None => RayRayIntersection::Skewed,
         }
     }
 
@@ -137,35 +137,35 @@ impl NeoLineRay3D {
 
 #[test]
 fn parallel_works() {
-    let l1 = NeoLineRay3D::X;
+    let l1 = Ray3D::X;
     let l2 = l1.offset_origin_by(Vec3::Y);
-    assert_eq!(l1.intersection_ray(&l2), NeoRayRayIntersection::Parallel);
+    assert_eq!(l1.intersection_ray(&l2), RayRayIntersection::Parallel);
 }
 
 #[test]
 fn collinear_no_overlap_works() {
-    let l1 = NeoLineRay3D::X;
+    let l1 = Ray3D::X;
     let l2 = l1.offset_origin_by(Vec3::X);
-    assert_eq!(l1.intersection_ray(&l2), NeoRayRayIntersection::Collinear);
+    assert_eq!(l1.intersection_ray(&l2), RayRayIntersection::Collinear);
 }
 
 #[test]
 fn intersection_works() {
-    let l1 = NeoLineRay3D::Y;
-    let l2 = NeoLineRay3D::X.offset_origin_by(Vec3::X);
+    let l1 = Ray3D::Y;
+    let l2 = Ray3D::X.offset_origin_by(Vec3::X);
     assert_eq!(
         l1.intersection_ray(&l2),
-        NeoRayRayIntersection::Intersection(Vec3::ZERO)
+        RayRayIntersection::Intersection(Vec3::ZERO)
     );
 }
 
 #[test]
 fn intersection_swapped_args_works() {
-    let l1 = NeoLineRay3D::Y;
-    let l2 = NeoLineRay3D::X.offset_origin_by(Vec3::X);
+    let l1 = Ray3D::Y;
+    let l2 = Ray3D::X.offset_origin_by(Vec3::X);
     assert_eq!(
         l2.intersection_ray(&l1),
-        NeoRayRayIntersection::Intersection(Vec3::ZERO)
+        RayRayIntersection::Intersection(Vec3::ZERO)
     );
 }
 
@@ -174,9 +174,9 @@ fn name() {
     let origin = Vec3::new(4129.3123, 119239.412, -4123132.2);
     let v = origin.cross(Vec3::X).normalize();
     let (d1, d2) = v.any_orthonormal_pair();
-    let l1 = NeoLineRay3D::new(origin + d1 * 1234.581, d1);
-    let l2 = NeoLineRay3D::new(origin + d2 * 12314.31234, d2);
+    let l1 = Ray3D::new(origin + d1 * 1234.581, d1);
+    let l2 = Ray3D::new(origin + d2 * 12314.31234, d2);
 
     let intersection = l1.intersection_ray(&l2);
-    assert_eq!(intersection, NeoRayRayIntersection::Intersection(origin))
+    assert_eq!(intersection, RayRayIntersection::Intersection(origin))
 }

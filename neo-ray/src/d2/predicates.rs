@@ -1,9 +1,9 @@
 use glam::Vec2;
 
 use crate::d2::constants::NEO_LINE_RAY_2D_EPS;
-use crate::d2::def::NeoLineRay2D;
+use crate::d2::def::Ray2D;
 
-impl NeoLineRay2D {
+impl Ray2D {
     pub fn is_degenerated(&self) -> bool {
         self.direction == Vec2::ZERO
     }
@@ -20,7 +20,7 @@ impl NeoLineRay2D {
 #[test]
 fn is_point_on_line_works_endpoint() {
     let p = Vec2::X;
-    let l = NeoLineRay2D::X;
+    let l = Ray2D::X;
     assert_eq!(
         l.is_point_on_ray(p),
         true,
@@ -32,7 +32,7 @@ fn is_point_on_line_works_endpoint() {
 #[test]
 fn is_point_on_line_works_epsilon() {
     let p = Vec2::X * (1.0 + f32::EPSILON);
-    let l = NeoLineRay2D::X;
+    let l = Ray2D::X;
     assert_eq!(
         l.is_point_on_ray(p),
         true,
@@ -43,7 +43,7 @@ fn is_point_on_line_works_epsilon() {
 
 #[test]
 fn is_point_on_line_works_tilted() {
-    let l = NeoLineRay2D::new(Vec2::ZERO, Vec2::new(1.0, 0.33));
+    let l = Ray2D::new(Vec2::ZERO, Vec2::new(1.0, 0.33));
     let p = l.origin + l.direction() * 0.33;
     assert_eq!(
         l.is_point_on_ray(p),
