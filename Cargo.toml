@@ -1,0 +1,33 @@
+[workspace]
+
+members = [
+  "round-num",
+  "round-boolop",
+  "geo-glam-interop",
+  "neo-line-segment",
+  "neo-ray",
+  "neo-boolops",
+  "neo-float",
+  "neo-tessellation",
+  "neo-plane",
+  "neo-coordinate-system",
+  "neo-aabb",
+]
+
+[workspace.dependencies]
+float_next_after = { version = "1.0" }
+geo = { version = "0.25", default-features = false }
+num-traits = { version = "0.2" }
+glam = "0.24"
+
+round-num = { path = "round-num" }
+round-boolop = { path = "round-boolop" }
+geo-glam-interop = { path = "geo-glam-interop" }
+neo-line-segment = { path = "neo-line-segment" }
+neo-ray = { path = "neo-ray" }
+neo-boolops = { path = "neo-boolops" }
+neo-float = { path = "neo-float" }
+neo-tessellation = { path = "neo-tessellation" }
+neo-plane = { path = "neo-plane" }
+neo-coordinate-system = { path = "neo-coordinate-system" }
+neo-aabb = { path = "neo-aabb" }

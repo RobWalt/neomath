@@ -1,0 +1,13 @@
+[package]
+name = "neo-ray"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+geo.workspace = true
+geo-glam-interop.workspace = true
+glam.workspace = true
+neo-plane.workspace = true
+neo-coordinate-system.workspace = true

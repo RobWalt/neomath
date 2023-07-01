@@ -1,0 +1,13 @@
+[package]
+name = "neo-line-segment"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+geo = { workspace = true }
+glam = { workspace = true, features = ["approx"]}
+geo-glam-interop = { path = "../geo-glam-interop" }
+neo-ray.workspace = true
+neo-aabb.workspace = true

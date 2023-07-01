@@ -1,0 +1,17 @@
+[package]
+name = "round-boolop"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+geo.workspace = true
+round-num = { version = "0.1.0", path = "../round-num" }
+
+[dev-dependencies]
+geo = { workspace = true, features = ["serde"] }
+geo-svg = "0.5.0"
+paste = "1.0.12"
+rand = "0.8.5"
+serde_json = "1.0.99"

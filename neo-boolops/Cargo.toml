@@ -1,0 +1,18 @@
+[package]
+name = "neo-boolops"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+geo.workspace = true
+geo-glam-interop.workspace = true
+glam.workspace = true
+neo-float.workspace = true
+neo-line-segment.workspace = true
+neo-tessellation.workspace = true
+
+[dev-dependencies]
+rand = "0.8.5"
+serde_json = "1.0.99"
