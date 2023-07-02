@@ -6,7 +6,7 @@ members = [
   "geo-glam-interop",
   "neo-line-segment",
   "neo-ray",
-  "neo-boolops",
+  "neo-geo-boolops",
   "neo-float",
   "neo-tessellation",
   "neo-plane",
@@ -26,7 +26,7 @@ round-boolop = { path = "round-boolop" }
 geo-glam-interop = { path = "geo-glam-interop" }
 neo-line-segment = { path = "neo-line-segment" }
 neo-ray = { path = "neo-ray" }
-neo-boolops = { path = "neo-boolops" }
+neo-geo-boolops = { path = "neo-geo-boolops" }
 neo-float = { path = "neo-float" }
 neo-tessellation = { path = "neo-tessellation" }
 neo-plane = { path = "neo-plane" }
