@@ -4,7 +4,7 @@ use geo_glam_interop::to_glam::ConvertToGlam;
 use glam::Vec2;
 use neo_float::NeoFloat;
 use neo_line_segment::d2::def::LineSegment2D;
-use neo_line_segment::d2::intersection::Line2DIntersection;
+use neo_line_segment::d2::intersection::LineLine2DIntersection;
 
 // Magic Numbers
 const MINIMUM_OVERLAP_LENGTH: f32 = 0.1;
@@ -72,14 +72,14 @@ fn intersect_indexed_lines<F: NeoFloat>(
     }
 
     match l1.intersection(&l2) {
-        Line2DIntersection::Intersection(point)
+        LineLine2DIntersection::Intersection(point)
             if !l1.is_endpoint(point)
                 && !l2.is_endpoint(point)
                 && !close_to_normal_points(other_points, point) =>
         {
             Some((idx1, idx2, line1, line2, IntersectionKind::Point(point)))
         }
-        Line2DIntersection::CollinearOverlap(line)
+        LineLine2DIntersection::CollinearOverlap(line)
             if line.overlap().length() > MINIMUM_OVERLAP_LENGTH
                 && !line
                     .non_overlap()
