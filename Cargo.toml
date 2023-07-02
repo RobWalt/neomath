@@ -6,7 +6,7 @@ members = [
   "neo-coordinate-system",
   "neo-float",
   "neo-geo-boolops",
-  "neo-intersection"
+  "neo-intersection",
   "neo-line-segment",
   "neo-plane",
   "neo-ray",
