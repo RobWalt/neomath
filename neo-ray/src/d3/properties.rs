@@ -16,9 +16,8 @@ impl Ray3D {
         Self::from((self.origin, self.direction.any_orthogonal_vector()))
     }
 
-    pub fn orthogonal_ray(&self, other: &Self) -> Option<Self> {
-        (!self.is_parallel_to(other))
-            .then(|| Self::from((self.origin, self.direction.cross(other.direction))))
+    pub fn orthogonal_dir(&self, other: &Self) -> Option<Vec3> {
+        (!self.is_parallel_to(other)).then(|| self.direction.cross(other.direction))
     }
 
     pub fn direction_normalized(&self) -> Vec3 {

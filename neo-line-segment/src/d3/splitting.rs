@@ -1,8 +1,8 @@
-use glam::Vec2;
+use glam::Vec3;
 
-use crate::d2::def::LineSegment2D;
+use crate::d3::def::LineSegment3D;
 
-impl LineSegment2D {
+impl LineSegment3D {
     pub fn split_at_percent(&self, percentage: f32) -> Option<(Self, Self)> {
         (0.0..=1.0).contains(&percentage).then(|| {
             let split_point = self.inject_scalar(percentage);
@@ -10,7 +10,7 @@ impl LineSegment2D {
         })
     }
 
-    pub fn insert_split_point(&self, midpoint: Vec2) -> (Self, Self) {
+    pub fn insert_split_point(&self, midpoint: Vec3) -> (Self, Self) {
         (Self::new(self.src, midpoint), Self::new(midpoint, self.dst))
     }
 

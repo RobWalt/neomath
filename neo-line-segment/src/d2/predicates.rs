@@ -8,10 +8,6 @@ impl LineSegment2D {
         self.src == self.dst
     }
 
-    pub fn is_point_on_line_ray(&self, point: Vec2) -> bool {
-        self.distance_to_ray_point(point) < NEO_LINE_SEGMENT_2D_EPS
-    }
-
     pub fn is_point_on_line(&self, point: Vec2) -> bool {
         self.distance_to_point(point) < NEO_LINE_SEGMENT_2D_EPS
     }
@@ -26,7 +22,7 @@ impl LineSegment2D {
 }
 
 #[test]
-fn is_point_on_line_endpoint_works() {
+fn is_point_on_line_works() {
     let p = Vec2::X;
     let l = LineSegment2D::UNIT_X.scale_dst_by(2.0);
     assert_eq!(
@@ -38,9 +34,21 @@ fn is_point_on_line_endpoint_works() {
 }
 
 #[test]
+fn is_point_on_line_endpoint_works() {
+    let p = Vec2::X;
+    let l = LineSegment2D::UNIT_X;
+    assert_eq!(
+        l.is_point_on_line(p),
+        true,
+        "{l:?}, {p:?}, {}",
+        l.distance_to_point(p)
+    );
+}
+
+#[test]
 fn is_point_on_line_epsilon_works() {
-    let p = Vec2::X + f32::EPSILON;
-    let l = LineSegment2D::UNIT_X.scale_dst_by(2.0);
+    let p = Vec2::X * (1.0 + f32::EPSILON);
+    let l = LineSegment2D::UNIT_X;
     assert_eq!(
         l.is_point_on_line(p),
         true,

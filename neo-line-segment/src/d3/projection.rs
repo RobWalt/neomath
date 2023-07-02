@@ -1,19 +1,20 @@
-use glam::Vec2;
+use glam::Vec3;
 
-use crate::d2::def::LineSegment2D;
+use crate::d3::def::LineSegment3D;
 
-impl LineSegment2D {
-    pub fn project_point(&self, point: Vec2) -> Vec2 {
+impl LineSegment3D {
+    // NOTE: Does it make sense to clip the projection to the line?
+    pub fn project_point(&self, point: Vec3) -> Vec3 {
         point.project_onto(self.direction())
     }
 
-    pub fn scalar_of(&self, point: Vec2) -> f32 {
+    pub fn scalar_of(&self, point: Vec3) -> f32 {
         self.project_point(point).length() / self.direction().length()
     }
 
     /// Inspired by the SDF formula of a line
     /// https://www.youtube.com/watch?v=PMltMdi1Wzg
-    pub fn distance_to_point(&self, point: Vec2) -> f32 {
+    pub fn distance_to_point(&self, point: Vec3) -> f32 {
         let pa = point - self.src;
         let ba = self.direction();
         let prod = pa.dot(ba) / ba.length_squared();
@@ -22,28 +23,28 @@ impl LineSegment2D {
         dist
     }
 
-    pub fn inject_scalar(&self, scalar: f32) -> Vec2 {
+    pub fn inject_scalar(&self, scalar: f32) -> Vec3 {
         self.src + scalar * self.direction()
     }
 }
 
 #[test]
 fn projection_works() {
-    let p = Vec2::Y;
-    let l = LineSegment2D::UNIT_ONE;
-    assert_eq!(l.project_point(p), Vec2::ONE * 0.5);
+    let p = Vec3::Y;
+    let l = LineSegment3D::UNIT_ONE;
+    assert_eq!(l.project_point(p), Vec3::ONE / 3.0);
 }
 
 #[test]
 fn scalar_of_works_half() {
-    let p = Vec2::ONE;
-    let l = LineSegment2D::UNIT_X.scale_dst_by(2.0);
+    let p = Vec3::ONE - Vec3::Z;
+    let l = LineSegment3D::UNIT_X.scale_dst_by(2.0);
     assert_eq!(l.scalar_of(p), 0.5);
 }
 
 #[test]
 fn scalar_of_works_two_thirds() {
-    let p = Vec2::ONE * 1.5;
-    let l = LineSegment2D::UNIT_X.scale_dst_by(2.0);
+    let p = (Vec3::ONE - Vec3::Z) * 1.5;
+    let l = LineSegment3D::UNIT_X.scale_dst_by(2.0);
     assert_eq!(l.scalar_of(p), 0.75);
 }

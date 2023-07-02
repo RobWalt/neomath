@@ -8,21 +8,21 @@ impl Ray3D {
     }
 
     pub fn aligning_rotation_between(&self, other: &Self) -> Quat {
-        self.orthogonal_ray(other)
-            .map(|normal| Quat::from_axis_angle(normal.direction, self.angle_between(other)))
+        self.orthogonal_dir(other)
+            .map(|normal| Quat::from_axis_angle(normal, self.angle_between(other)))
             .unwrap_or(Quat::IDENTITY)
     }
 
     pub fn angle_xaxis(&self) -> Quat {
-        self.aligning_rotation_between(&Ray3D::X)
+        self.aligning_rotation_between(&Self::X)
     }
 
     pub fn angle_yaxis(&self) -> Quat {
-        self.aligning_rotation_between(&Ray3D::Y)
+        self.aligning_rotation_between(&Self::Y)
     }
 
     pub fn angle_zaxis(&self) -> Quat {
-        self.aligning_rotation_between(&Ray3D::Z)
+        self.aligning_rotation_between(&Self::Z)
     }
 
     pub fn rotate(&self, quat: Quat) -> Self {
