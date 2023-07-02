@@ -1,43 +1,44 @@
 [workspace]
 
 members = [
-  "round-num",
-  "round-boolop",
   "geo-glam-interop",
-  "neo-line-segment",
-  "neo-ray",
-  "neo-geo-boolops",
-  "neo-float",
-  "neo-tessellation",
-  "neo-plane",
-  "neo-coordinate-system",
   "neo-aabb",
+  "neo-coordinate-system",
+  "neo-float",
+  "neo-geo-boolops",
   "neo-intersection"
+  "neo-line-segment",
+  "neo-plane",
+  "neo-ray",
+  "neo-tessellation",
+  "round-boolop",
+  "round-num",
 ]
 
 [workspace.dependencies]
 # needed
 float_next_after = { version = "1.0" }
 geo = { version = "0.25", default-features = false }
-num-traits = { version = "0.2" }
 glam = "0.24"
+num-traits = { version = "0.2" }
 spade = "2.2"
 
-round-num = { path = "round-num" }
-round-boolop = { path = "round-boolop" }
+# workspace crates
 geo-glam-interop = { path = "geo-glam-interop" }
-neo-line-segment = { path = "neo-line-segment" }
-neo-ray = { path = "neo-ray" }
-neo-geo-boolops = { path = "neo-geo-boolops" }
-neo-float = { path = "neo-float" }
-neo-tessellation = { path = "neo-tessellation" }
-neo-plane = { path = "neo-plane" }
-neo-coordinate-system = { path = "neo-coordinate-system" }
 neo-aabb = { path = "neo-aabb" }
+neo-coordinate-system = { path = "neo-coordinate-system" }
+neo-float = { path = "neo-float" }
+neo-geo-boolops = { path = "neo-geo-boolops" }
 neo-intersection = { path = "neo-intersection" }
+neo-line-segment = { path = "neo-line-segment" }
+neo-plane = { path = "neo-plane" }
+neo-ray = { path = "neo-ray" }
+neo-tessellation = { path = "neo-tessellation" }
+round-boolop = { path = "round-boolop" }
+round-num = { path = "round-num" }
 
 # dev
-rand = "0.8"
-serde_json = "1.0"
 geo-svg = "0.5"
 paste = "1.0"
+rand = "0.8"
+serde_json = "1.0"
