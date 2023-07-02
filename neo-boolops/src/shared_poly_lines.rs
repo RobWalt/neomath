@@ -66,8 +66,13 @@ fn intersect_indexed_lines<F: NeoFloat>(
 )> {
     let l1 = line_to_line_segment(line1);
     let l2 = line_to_line_segment(line2);
+
+    if l1 == l2 || l1.flip() == l2 {
+        return None;
+    }
+
     match l1.intersection(&l2) {
-        Line2DIntersection::IntersectionInBoth(point)
+        Line2DIntersection::Intersection(point)
             if !l1.is_endpoint(point)
                 && !l2.is_endpoint(point)
                 && !close_to_normal_points(other_points, point) =>
@@ -75,7 +80,11 @@ fn intersect_indexed_lines<F: NeoFloat>(
             Some((idx1, idx2, line1, line2, IntersectionKind::Point(point)))
         }
         Line2DIntersection::CollinearOverlap(line)
-            if line.overlap().length() > MINIMUM_OVERLAP_LENGTH && l1 != l2 && l1.flip() != l2 =>
+            if line.overlap().length() > MINIMUM_OVERLAP_LENGTH
+                && !line
+                    .non_overlap()
+                    .iter()
+                    .all(|l| l.length() < MINIMUM_OVERLAP_LENGTH) =>
         {
             Some((
                 idx1,

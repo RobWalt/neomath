@@ -7,26 +7,36 @@ pub enum Line2DIntersection {
     Parallel,
     CollinearNoOverlap,
     CollinearOverlap(Line2DOverlap),
-    IntersectionInBoth(Vec2),
-    IntersectionInFirst(Vec2),
-    IntersectionInSecond(Vec2),
-    IntersectionOutside(Vec2),
+    Intersection(Vec2),
+    None,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-pub struct Line2DOverlap(pub [LineSegment2D; 3]);
+pub struct Line2DOverlap {
+    before: LineSegment2D,
+    overlap: LineSegment2D,
+    after: LineSegment2D,
+}
 
 impl Line2DOverlap {
     pub fn overlap(&self) -> LineSegment2D {
-        self.0[1]
+        self.overlap
     }
     pub fn non_overlap(&self) -> [LineSegment2D; 2] {
-        [self.0[0], self.0[2]]
+        [self.before, self.after]
     }
 }
 
 impl LineSegment2D {
     pub fn intersection(&self, other: &Self) -> Line2DIntersection {
+        if self.aabb().intersects(&other.aabb()) {
+            self.classify_aabbs_intersected(other)
+        } else {
+            self.classify_aabbs_didnt_intersect(other)
+        }
+    }
+
+    fn classify_aabbs_intersected(&self, other: &Self) -> Line2DIntersection {
         use neo_ray::d2::intersection::RayRay2DIntersection::*;
         match self.ray().intersection(&other.ray()) {
             Parallel => Line2DIntersection::Parallel,
@@ -34,6 +44,16 @@ impl LineSegment2D {
             Intersection(intersection_point) => {
                 self.classify_intersecting_relation_to(other, intersection_point)
             }
+        }
+    }
+
+    fn classify_aabbs_didnt_intersect(&self, other: &Self) -> Line2DIntersection {
+        if self.ray().is_point_on_ray(other.src) && self.ray().is_point_on_ray(other.dst) {
+            Line2DIntersection::CollinearNoOverlap
+        } else if self.is_parallel_to(other) {
+            Line2DIntersection::Parallel
+        } else {
+            Line2DIntersection::None
         }
     }
 
@@ -53,12 +73,16 @@ impl LineSegment2D {
         let mut all_scalars = [other_scalar_a, other_scalar_b, 0.0, 1.0];
         all_scalars.sort_by(f32::total_cmp);
         let all_points = all_scalars.map(|s| self.inject_scalar(s));
-        let split_lines = [
+        let [before, overlap, after] = [
             LineSegment2D::new(all_points[0], all_points[1]),
             LineSegment2D::new(all_points[1], all_points[2]),
             LineSegment2D::new(all_points[2], all_points[3]),
         ];
-        Line2DIntersection::CollinearOverlap(Line2DOverlap(split_lines))
+        Line2DIntersection::CollinearOverlap(Line2DOverlap {
+            before,
+            overlap,
+            after,
+        })
     }
 
     fn classify_intersecting_relation_to(
@@ -69,10 +93,8 @@ impl LineSegment2D {
         let in_first = self.is_point_on_line(intersection_point);
         let in_second = other.is_point_on_line(intersection_point);
         match (in_first, in_second) {
-            (true, true) => Line2DIntersection::IntersectionInBoth(intersection_point),
-            (true, false) => Line2DIntersection::IntersectionInFirst(intersection_point),
-            (false, true) => Line2DIntersection::IntersectionInSecond(intersection_point),
-            (false, false) => Line2DIntersection::IntersectionOutside(intersection_point),
+            (true, true) => Line2DIntersection::Intersection(intersection_point),
+            _ => Line2DIntersection::None,
         }
     }
 }
@@ -83,7 +105,7 @@ fn intersection_both_works() {
     let l2 = LineSegment2D::new(Vec2::X, Vec2::Y);
     assert_eq!(
         l1.intersection(&l2),
-        Line2DIntersection::IntersectionInBoth(Vec2::ONE * 0.5)
+        Line2DIntersection::Intersection(Vec2::ONE * 0.5)
     )
 }
 
@@ -91,30 +113,21 @@ fn intersection_both_works() {
 fn intersection_first_works() {
     let l1 = LineSegment2D::new(Vec2::ONE, Vec2::ONE - Vec2::Y * 0.5);
     let l2 = LineSegment2D::new(Vec2::ZERO, Vec2::X * 2.0);
-    assert_eq!(
-        l2.intersection(&l1),
-        Line2DIntersection::IntersectionInFirst(Vec2::X)
-    )
+    assert_eq!(l2.intersection(&l1), Line2DIntersection::None)
 }
 
 #[test]
 fn intersection_second_works() {
     let l1 = LineSegment2D::new(Vec2::ONE, Vec2::ONE - Vec2::Y * 0.5);
     let l2 = LineSegment2D::new(Vec2::ZERO, Vec2::X * 2.0);
-    assert_eq!(
-        l1.intersection(&l2),
-        Line2DIntersection::IntersectionInSecond(Vec2::X)
-    );
+    assert_eq!(l1.intersection(&l2), Line2DIntersection::None);
 }
 
 #[test]
 fn intersection_outside_works() {
     let l1 = LineSegment2D::new(Vec2::X, Vec2::ONE - Vec2::Y * 0.5);
     let l2 = LineSegment2D::new(Vec2::Y, Vec2::ONE - Vec2::X * 0.5);
-    assert_eq!(
-        l1.intersection(&l2),
-        Line2DIntersection::IntersectionOutside(Vec2::ONE)
-    );
+    assert_eq!(l1.intersection(&l2), Line2DIntersection::None);
 }
 
 #[test]
@@ -137,14 +150,14 @@ fn collinear_overlap_works() {
     let l2 = l1.offset_line_by(Vec2::X * 0.5);
     assert_eq!(
         l1.intersection(&l2),
-        Line2DIntersection::CollinearOverlap(Line2DOverlap([
-            LineSegment2D::UNIT_X.scale_dst_by(0.5),
-            LineSegment2D::UNIT_X
+        Line2DIntersection::CollinearOverlap(Line2DOverlap {
+            before: LineSegment2D::UNIT_X.scale_dst_by(0.5),
+            overlap: LineSegment2D::UNIT_X
                 .scale_dst_by(0.5)
                 .offset_line_by(Vec2::X * 0.5),
-            LineSegment2D::UNIT_X
+            after: LineSegment2D::UNIT_X
                 .scale_dst_by(0.5)
                 .offset_line_by(Vec2::X),
-        ]))
+        })
     );
 }
