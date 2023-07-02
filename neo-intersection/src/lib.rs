@@ -1,5 +1,6 @@
 pub(crate) mod coord_sys;
 pub(crate) mod line2d;
+pub(crate) mod line3d;
 pub(crate) mod plane;
 pub(crate) mod ray2d;
 pub(crate) mod ray3d;

@@ -1,3 +1,5 @@
+use std::ops::RangeInclusive;
+
 use geo::{Contains, Intersects};
 use geo_glam_interop::to_geo::ConvertToGeo;
 use glam::Vec2;
@@ -5,6 +7,14 @@ use glam::Vec2;
 use crate::d2::def::AABB2D;
 
 impl AABB2D {
+    pub fn x_range(&self) -> RangeInclusive<f32> {
+        self.min.x..=self.max.x
+    }
+
+    pub fn y_range(&self) -> RangeInclusive<f32> {
+        self.min.y..=self.max.y
+    }
+
     pub fn contains(&self, point: Vec2) -> bool {
         let rect = self.as_rect();
         let point = point.to_geo();
@@ -59,8 +69,8 @@ fn aabb_intersection_works() {
 
 #[test]
 fn aabb_self_intersection_works() {
-    let aabb1 = AABB2D::new(Vec2::ZERO, Vec2::ONE);
-    assert_eq!(aabb1.intersects(&aabb1), true);
+    let aabb = AABB2D::new(Vec2::ZERO, Vec2::ONE);
+    assert_eq!(aabb.intersects(&aabb), true);
 }
 
 #[test]
@@ -72,6 +82,6 @@ fn flat_aabb_intersection_works() {
 
 #[test]
 fn flat_aabb_self_intersection_works() {
-    let aabb1 = AABB2D::new(Vec2::ZERO, Vec2::X);
-    assert_eq!(aabb1.intersects(&aabb1), true);
+    let aabb = AABB2D::new(Vec2::ZERO, Vec2::X);
+    assert_eq!(aabb.intersects(&aabb), true);
 }

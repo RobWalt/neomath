@@ -13,7 +13,7 @@ impl LineSegment2D {
     }
 
     pub fn is_parallel_to(&self, other: &Self) -> bool {
-        self.direction().perp_dot(other.direction()).abs() < NEO_LINE_SEGMENT_2D_EPS
+        self.ray().is_parallel_to(&other.ray())
     }
 
     pub fn is_endpoint(&self, point: Vec2) -> bool {

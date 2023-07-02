@@ -2,8 +2,8 @@ use glam::Vec3;
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct AABB3D {
-    min: Vec3,
-    max: Vec3,
+    pub(crate) min: Vec3,
+    pub(crate) max: Vec3,
 }
 
 impl AABB3D {

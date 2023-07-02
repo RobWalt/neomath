@@ -6,6 +6,7 @@ use crate::trait_def::NeoIntersectable;
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum LineLine2DIntersection {
+    None,
     Parallel,
     CollinearNoOverlap,
     CollinearOverlap(Line2DOverlap),
@@ -13,7 +14,6 @@ pub enum LineLine2DIntersection {
     /// intersected. If you're interested in the general intersection point which may be located
     /// outside the line, consider using [`LineSegment2D::ray_intersection`]
     Intersection(Vec2),
-    None,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
@@ -37,14 +37,14 @@ impl NeoIntersectable for LineSegment2D {
 
     fn intersection(&self, rhs: &Self) -> Self::Output {
         if self.aabb().intersects(&rhs.aabb()) {
-            classify_aabbs_intersected(self, rhs)
+            classify_aabbs_intersecting(self, rhs)
         } else {
-            classify_aabbs_didnt_intersect(self, rhs)
+            classify_aabbs_not_intersecting(self, rhs)
         }
     }
 }
 
-pub(crate) fn classify_aabbs_intersected(
+pub(crate) fn classify_aabbs_intersecting(
     l1: &LineSegment2D,
     l2: &LineSegment2D,
 ) -> LineLine2DIntersection {
@@ -57,7 +57,7 @@ pub(crate) fn classify_aabbs_intersected(
     }
 }
 
-pub(crate) fn classify_aabbs_didnt_intersect(
+pub(crate) fn classify_aabbs_not_intersecting(
     l1: &LineSegment2D,
     l2: &LineSegment2D,
 ) -> LineLine2DIntersection {
@@ -115,7 +115,7 @@ pub(crate) fn classify_intersecting_relation_to(
 }
 
 #[test]
-fn intersection_both_works() {
+fn intersection_in_both_works() {
     let l1 = LineSegment2D::new(Vec2::ZERO, Vec2::ONE);
     let l2 = LineSegment2D::new(Vec2::X, Vec2::Y);
     assert_eq!(
@@ -125,14 +125,14 @@ fn intersection_both_works() {
 }
 
 #[test]
-fn intersection_first_works() {
+fn intersection_in_first_works() {
     let l1 = LineSegment2D::new(Vec2::ONE, Vec2::ONE - Vec2::Y * 0.5);
     let l2 = LineSegment2D::new(Vec2::ZERO, Vec2::X * 2.0);
     assert_eq!(l2.intersection(&l1), LineLine2DIntersection::None)
 }
 
 #[test]
-fn intersection_second_works() {
+fn intersection_in_second_works() {
     let l1 = LineSegment2D::new(Vec2::ONE, Vec2::ONE - Vec2::Y * 0.5);
     let l2 = LineSegment2D::new(Vec2::ZERO, Vec2::X * 2.0);
     assert_eq!(l1.intersection(&l2), LineLine2DIntersection::None);
