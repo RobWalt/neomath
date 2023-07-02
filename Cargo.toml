@@ -12,6 +12,7 @@ members = [
   "neo-plane",
   "neo-coordinate-system",
   "neo-aabb",
+  "neo-intersection"
 ]
 
 [workspace.dependencies]
@@ -31,3 +32,4 @@ neo-tessellation = { path = "neo-tessellation" }
 neo-plane = { path = "neo-plane" }
 neo-coordinate-system = { path = "neo-coordinate-system" }
 neo-aabb = { path = "neo-aabb" }
+neo-intersection = { path = "neo-intersection" }
