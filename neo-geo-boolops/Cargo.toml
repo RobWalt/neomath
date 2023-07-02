@@ -17,3 +17,4 @@ neo-intersection.workspace = true
 [dev-dependencies]
 rand.workspace = true
 serde_json.workspace = true
+geo-svg.workspace = true
