@@ -8,4 +8,4 @@ edition = "2021"
 [dependencies]
 geo.workspace = true
 neo-float.workspace = true
-spade = "2.2.0"
+spade.workspace = true
