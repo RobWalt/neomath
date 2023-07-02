@@ -8,7 +8,7 @@ impl LineSegment3D {
     }
 
     pub fn orthogonal_dir(&self, other: &Self) -> Option<Vec3> {
-        (!self.is_parallel_to(other)).then(|| self.direction().cross(other.direction()))
+        self.ray().orthogonal_dir(&other.ray())
     }
 
     pub fn direction_normalized(&self) -> Vec3 {

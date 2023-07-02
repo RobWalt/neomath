@@ -3,30 +3,24 @@ use glam::{Quat, Vec3};
 use crate::d3::def::LineSegment3D;
 
 impl LineSegment3D {
-    fn angle_between(&self, other: &Self) -> f32 {
-        self.direction().angle_between(other.direction())
-    }
-
     pub fn aligning_rotation_between(&self, other: &Self) -> Quat {
-        self.orthogonal_dir(other)
-            .map(|normal| Quat::from_axis_angle(normal, self.angle_between(other)))
-            .unwrap_or(Quat::IDENTITY)
+        self.ray().aligning_rotation_between(&other.ray())
     }
 
     pub fn angle_xaxis(&self) -> Quat {
-        self.aligning_rotation_between(&Self::UNIT_X)
+        self.ray().angle_xaxis()
     }
 
     pub fn angle_yaxis(&self) -> Quat {
-        self.aligning_rotation_between(&Self::UNIT_Y)
+        self.ray().angle_yaxis()
     }
 
     pub fn angle_zaxis(&self) -> Quat {
-        self.aligning_rotation_between(&Self::UNIT_Z)
+        self.ray().angle_zaxis()
     }
 
     pub fn rotate_around(&self, p: Vec3, quat: Quat) -> Self {
-        Self::from(self.array().map(|v| quat * (v - p) + p))
+        Self::from(self.array().map(|v| p + quat * (v - p)))
     }
 }
 
