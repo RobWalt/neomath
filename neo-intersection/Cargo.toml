@@ -6,3 +6,8 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+glam.workspace = true
+neo-coordinate-system.workspace = true
+neo-line-segment.workspace = true
+neo-plane.workspace = true
+neo-ray.workspace = true

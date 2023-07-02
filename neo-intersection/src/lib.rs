@@ -1,14 +1,7 @@
-pub fn add(left: usize, right: usize) -> usize {
-    left + right
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
-    }
-}
+pub(crate) mod coord_sys;
+pub(crate) mod line2d;
+pub(crate) mod plane;
+pub(crate) mod ray2d;
+pub(crate) mod ray3d;
+pub mod results;
+pub mod trait_def;

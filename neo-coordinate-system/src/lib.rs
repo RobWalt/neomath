@@ -1,10 +1,12 @@
 use glam::Vec3;
 use neo_plane::Plane;
 
+pub const COORDINATE_SYSTEM_EPS: f32 = 0.000_1;
+
 #[derive(Debug, Clone, Copy)]
 pub struct CoordinateSystem {
-    plane: Plane,
-    origin: Vec3,
+    pub plane: Plane,
+    pub origin: Vec3,
 }
 
 impl CoordinateSystem {
@@ -34,16 +36,17 @@ impl PartialEq for CoordinateSystem {
 }
 
 impl CoordinateSystem {
+    pub fn offset_origin_by(&self, offset: Vec3) -> Self {
+        Self {
+            origin: self.origin + offset,
+            plane: self.plane,
+        }
+    }
+}
+
+impl CoordinateSystem {
     pub fn is_point_in_coordinate_system(&self, point: Vec3) -> bool {
         self.plane.is_point_in_plane(point - self.origin)
-    }
-
-    pub fn normal(&self) -> Vec3 {
-        self.plane.normal
-    }
-
-    pub fn origin(&self) -> Vec3 {
-        self.origin
     }
 }
 

@@ -1,7 +1,8 @@
 use glam::Vec2;
-use neo_ray::d2::intersection::RayRay2DIntersection;
+use neo_line_segment::d2::def::LineSegment2D;
 
-use crate::d2::def::LineSegment2D;
+use crate::ray2d::ray::RayRay2DIntersection;
+use crate::trait_def::NeoIntersectable;
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum LineLine2DIntersection {
@@ -31,79 +32,85 @@ impl Line2DOverlap {
     }
 }
 
-impl LineSegment2D {
-    pub fn intersection(&self, other: &Self) -> LineLine2DIntersection {
-        if self.aabb().intersects(&other.aabb()) {
-            self.classify_aabbs_intersected(other)
+impl NeoIntersectable for LineSegment2D {
+    type Output = LineLine2DIntersection;
+
+    fn intersection(&self, rhs: &Self) -> Self::Output {
+        if self.aabb().intersects(&rhs.aabb()) {
+            classify_aabbs_intersected(self, rhs)
         } else {
-            self.classify_aabbs_didnt_intersect(other)
+            classify_aabbs_didnt_intersect(self, rhs)
         }
     }
+}
 
-    pub fn ray_intersection(&self, other: &Self) -> RayRay2DIntersection {
-        self.ray().intersection(&other.ray())
-    }
-
-    fn classify_aabbs_intersected(&self, other: &Self) -> LineLine2DIntersection {
-        use neo_ray::d2::intersection::RayRay2DIntersection::*;
-        match self.ray_intersection(other) {
-            Parallel => LineLine2DIntersection::Parallel,
-            Collinear => self.classify_collinear_overlap(other),
-            Intersection(intersection_point) => {
-                self.classify_intersecting_relation_to(other, intersection_point)
-            }
+pub(crate) fn classify_aabbs_intersected(
+    l1: &LineSegment2D,
+    l2: &LineSegment2D,
+) -> LineLine2DIntersection {
+    match l1.ray().intersection(&l2.ray()) {
+        RayRay2DIntersection::Parallel => LineLine2DIntersection::Parallel,
+        RayRay2DIntersection::Collinear => classify_collinear_overlap(l1, l2),
+        RayRay2DIntersection::Intersection(intersection_point) => {
+            classify_intersecting_relation_to(l1, l2, intersection_point)
         }
     }
+}
 
-    fn classify_aabbs_didnt_intersect(&self, other: &Self) -> LineLine2DIntersection {
-        if self.ray().is_point_on_ray(other.src) && self.ray().is_point_on_ray(other.dst) {
-            LineLine2DIntersection::CollinearNoOverlap
-        } else if self.is_parallel_to(other) {
-            LineLine2DIntersection::Parallel
-        } else {
-            LineLine2DIntersection::None
-        }
+pub(crate) fn classify_aabbs_didnt_intersect(
+    l1: &LineSegment2D,
+    l2: &LineSegment2D,
+) -> LineLine2DIntersection {
+    if l1.ray().is_point_on_ray(l2.src) && l1.ray().is_point_on_ray(l2.dst) {
+        LineLine2DIntersection::CollinearNoOverlap
+    } else if l1.is_parallel_to(l2) {
+        LineLine2DIntersection::Parallel
+    } else {
+        LineLine2DIntersection::None
     }
+}
 
-    fn classify_collinear_overlap(&self, other: &Self) -> LineLine2DIntersection {
-        let other_scalars = other.array().map(|v| self.scalar_of(v));
-        if other_scalars.iter().any(|s| (0.0..=1.0).contains(s)) {
-            self.calculate_collinear_overlap(other_scalars)
-        } else {
-            LineLine2DIntersection::CollinearNoOverlap
-        }
+pub(crate) fn classify_collinear_overlap(
+    l1: &LineSegment2D,
+    l2: &LineSegment2D,
+) -> LineLine2DIntersection {
+    let other_scalars = l2.array().map(|v| l1.scalar_of(v));
+    if other_scalars.iter().any(|s| (0.0..=1.0).contains(s)) {
+        calculate_collinear_overlap(l1, other_scalars)
+    } else {
+        LineLine2DIntersection::CollinearNoOverlap
     }
+}
 
-    fn calculate_collinear_overlap(
-        &self,
-        [other_scalar_a, other_scalar_b]: [f32; 2],
-    ) -> LineLine2DIntersection {
-        let mut all_scalars = [other_scalar_a, other_scalar_b, 0.0, 1.0];
-        all_scalars.sort_by(f32::total_cmp);
-        let all_points = all_scalars.map(|s| self.inject_scalar(s));
-        let [before, overlap, after] = [
-            LineSegment2D::new(all_points[0], all_points[1]),
-            LineSegment2D::new(all_points[1], all_points[2]),
-            LineSegment2D::new(all_points[2], all_points[3]),
-        ];
-        LineLine2DIntersection::CollinearOverlap(Line2DOverlap {
-            before,
-            overlap,
-            after,
-        })
-    }
+pub(crate) fn calculate_collinear_overlap(
+    l: &LineSegment2D,
+    [other_scalar_a, other_scalar_b]: [f32; 2],
+) -> LineLine2DIntersection {
+    let mut all_scalars = [other_scalar_a, other_scalar_b, 0.0, 1.0];
+    all_scalars.sort_by(f32::total_cmp);
+    let all_points = all_scalars.map(|s| l.inject_scalar(s));
+    let [before, overlap, after] = [
+        LineSegment2D::new(all_points[0], all_points[1]),
+        LineSegment2D::new(all_points[1], all_points[2]),
+        LineSegment2D::new(all_points[2], all_points[3]),
+    ];
+    LineLine2DIntersection::CollinearOverlap(Line2DOverlap {
+        before,
+        overlap,
+        after,
+    })
+}
 
-    fn classify_intersecting_relation_to(
-        &self,
-        other: &Self,
-        intersection_point: Vec2,
-    ) -> LineLine2DIntersection {
-        let in_first = self.is_point_on_line(intersection_point);
-        let in_second = other.is_point_on_line(intersection_point);
-        match (in_first, in_second) {
-            (true, true) => LineLine2DIntersection::Intersection(intersection_point),
-            _ => LineLine2DIntersection::None,
-        }
+pub(crate) fn classify_intersecting_relation_to(
+    l1: &LineSegment2D,
+    l2: &LineSegment2D,
+    intersection_point: Vec2,
+) -> LineLine2DIntersection {
+    let in_first = l1.is_point_on_line(intersection_point);
+    let in_second = l2.is_point_on_line(intersection_point);
+    match (in_first, in_second) {
+        (true, true) => LineLine2DIntersection::Intersection(intersection_point),
+        _ => LineLine2DIntersection::None,
     }
 }
 

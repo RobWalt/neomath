@@ -3,8 +3,9 @@ use geo_glam_interop::neo_float::NeoFloatConversions;
 use geo_glam_interop::to_glam::ConvertToGlam;
 use glam::Vec2;
 use neo_float::NeoFloat;
+use neo_intersection::results::LineLine2DIntersection;
+use neo_intersection::trait_def::NeoIntersectable;
 use neo_line_segment::d2::def::LineSegment2D;
-use neo_line_segment::d2::intersection::LineLine2DIntersection;
 
 // Magic Numbers
 const MINIMUM_OVERLAP_LENGTH: f32 = 0.1;

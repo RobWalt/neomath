@@ -12,6 +12,7 @@ glam.workspace = true
 neo-float.workspace = true
 neo-line-segment.workspace = true
 neo-tessellation.workspace = true
+neo-intersection.workspace = true
 
 [dev-dependencies]
 rand.workspace = true

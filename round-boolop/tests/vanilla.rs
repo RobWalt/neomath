@@ -88,7 +88,6 @@ fn new() {
                 .then_some(path_str.to_string())
         })
         .for_each(|path| {
-            println!("{path}");
             test_new_prog(BooleanOps::difference, path.as_str());
         })
 }

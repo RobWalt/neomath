@@ -39,7 +39,7 @@ impl PartialEq for Plane {
 
 impl Plane {
     pub fn is_point_in_plane(&self, point: Vec3) -> bool {
-        self.normal.dot(point) < PLANE_EPS
+        self.normal.dot(point).abs() < PLANE_EPS
     }
 }
 

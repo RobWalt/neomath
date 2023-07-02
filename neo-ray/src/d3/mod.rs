@@ -2,7 +2,6 @@ pub mod constants;
 pub mod constructor;
 pub mod conversion;
 pub mod def;
-pub mod intersection;
 pub mod operations;
 pub mod predicates;
 pub mod projection;
