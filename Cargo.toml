@@ -11,8 +11,6 @@ members = [
   "neo-plane",
   "neo-ray",
   "neo-tessellation",
-  "round-boolop",
-  "round-num",
 ]
 
 [workspace.dependencies]
@@ -34,11 +32,12 @@ neo-line-segment = { path = "neo-line-segment" }
 neo-plane = { path = "neo-plane" }
 neo-ray = { path = "neo-ray" }
 neo-tessellation = { path = "neo-tessellation" }
-round-boolop = { path = "round-boolop" }
-round-num = { path = "round-num" }
 
 # dev
 geo-svg = "0.5"
 paste = "1.0"
 rand = "0.8"
 serde_json = "1.0"
+
+[patch.crates-io]
+geo = { git = "https://github.com/RobWalt/geo", branch = "feat/falliable-boolops", default-features = false }
