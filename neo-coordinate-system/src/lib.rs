@@ -27,6 +27,13 @@ impl CoordinateSystem {
             origin,
         }
     }
+
+    pub fn flip(self) -> Self {
+        Self {
+            plane: self.plane.flip(),
+            ..self
+        }
+    }
 }
 
 impl PartialEq for CoordinateSystem {

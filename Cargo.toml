@@ -10,12 +10,12 @@ members = [
   "neo-line-segment",
   "neo-plane",
   "neo-ray",
+  "neo-surface",
   "neo-tessellation",
 ]
 
 [workspace.dependencies]
 # needed
-float_next_after = { version = "1.0" }
 geo = { version = "0.25", default-features = false }
 glam = "0.24"
 num-traits = { version = "0.2" }
@@ -31,6 +31,7 @@ neo-intersection = { path = "neo-intersection" }
 neo-line-segment = { path = "neo-line-segment" }
 neo-plane = { path = "neo-plane" }
 neo-ray = { path = "neo-ray" }
+neo-surface = { path = "neo-surface" }
 neo-tessellation = { path = "neo-tessellation" }
 
 # dev
@@ -40,4 +41,4 @@ rand = "0.8"
 serde_json = "1.0"
 
 [patch.crates-io]
-geo = { git = "https://github.com/RobWalt/geo", branch = "feat/falliable-boolops", default-features = false }
+geo = { git = "https://github.com/RobWalt/geo", branch = "feat/falliable-boolops" }
