@@ -1,9 +1,10 @@
 use geo_glam_interop::to_glam::ConvertToGlam;
 
-use crate::def::{NeoPolygon3D, NeoSurface};
+use crate::polygon3d::def::NeoPolygon3D;
+use crate::surface::def::NeoSurface;
 
 impl NeoSurface {
-    pub fn shape_injection(&self) -> NeoPolygon3D {
+    pub fn as_polygon_3d(&self) -> NeoPolygon3D {
         let rotation = self.coordinate_system.plane.injection_rotation();
         let translation = self.matching_translation();
 
@@ -23,6 +24,7 @@ impl NeoSurface {
             .collect::<Vec<_>>();
 
         NeoPolygon3D {
+            normal: self.coordinate_system.plane.normal,
             exterior,
             interiors,
         }
@@ -35,7 +37,7 @@ mod test {
     use neo_coordinate_system::CoordinateSystem;
     use neo_plane::Plane;
 
-    use crate::def::{NeoSurface, SURFACE_EPS};
+    use crate::surface::def::{NeoSurface, SURFACE_EPS};
 
     fn create_standard_surface() -> NeoSurface {
         let local_x = Vec3::X + Vec3::Z;
@@ -58,7 +60,7 @@ mod test {
     fn shape_injection_works() {
         let surface = create_standard_surface();
 
-        let surface_3d_points = surface.shape_injection();
+        let surface_3d_points = surface.as_polygon_3d();
 
         assert!(!surface_3d_points.exterior.is_empty());
         assert!(surface_3d_points.interiors.is_empty());

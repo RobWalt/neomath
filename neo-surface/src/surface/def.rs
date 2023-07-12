@@ -1,4 +1,3 @@
-use glam::Vec3;
 use neo_coordinate_system::CoordinateSystem;
 
 pub const SURFACE_EPS: f32 = 0.000_1;
@@ -12,10 +11,4 @@ pub struct NeoSurface {
     pub shape_origin: geo::Coord<f32>,
     /// The shape of the surface in a 2D context
     pub shape: geo::Polygon<f32>,
-}
-
-#[derive(Debug, Clone)]
-pub struct NeoPolygon3D {
-    pub exterior: Vec<Vec3>,
-    pub interiors: Vec<Vec<Vec3>>,
 }

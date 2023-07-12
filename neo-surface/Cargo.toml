@@ -12,5 +12,6 @@ glam.workspace = true
 neo-aabb.workspace = true
 neo-coordinate-system.workspace = true
 neo-geo-boolops.workspace = true
+neo-line-segment.workspace = true
 neo-plane.workspace = true
 neo-ray.workspace = true

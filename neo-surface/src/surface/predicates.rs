@@ -1,7 +1,7 @@
 use geo::{Contains, Scale};
 use glam::Vec3;
 
-use crate::def::NeoSurface;
+use crate::surface::def::NeoSurface;
 
 impl NeoSurface {
     pub fn is_point_in_surface(&self, point: Vec3) -> bool {
@@ -31,7 +31,7 @@ mod surface_predicates {
     use neo_coordinate_system::CoordinateSystem;
     use neo_plane::Plane;
 
-    use crate::def::NeoSurface;
+    use crate::surface::def::NeoSurface;
 
     fn create_standard_surface() -> NeoSurface {
         let local_x = Vec3::X + Vec3::Z;

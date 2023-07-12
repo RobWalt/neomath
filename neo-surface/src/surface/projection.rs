@@ -2,7 +2,7 @@ use geo_glam_interop::to_geo::ConvertToGeo;
 use geo_glam_interop::to_glam::ConvertToGlam;
 use glam::Vec3;
 
-use crate::def::NeoSurface;
+use crate::surface::def::NeoSurface;
 
 impl NeoSurface {
     /// translation that transfers a point, which was rotated to the coordinate system plane to a
@@ -40,7 +40,7 @@ mod test {
     use neo_coordinate_system::CoordinateSystem;
     use neo_plane::Plane;
 
-    use crate::def::NeoSurface;
+    use crate::surface::def::NeoSurface;
 
     fn create_standard_surface() -> NeoSurface {
         let local_x = Vec3::X + Vec3::Z;
