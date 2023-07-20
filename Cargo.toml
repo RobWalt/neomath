@@ -2,6 +2,7 @@
 
 members = [
   "neo-aabb",
+  "neo-bounded",
   "neo-coordinate-system",
   "neo-float",
   "neo-geo-boolops",
@@ -23,6 +24,7 @@ spade = "2.2"
 
 # workspace crates
 neo-aabb = { path = "neo-aabb" }
+neo-bounded = { path = "neo-bounded" }
 neo-coordinate-system = { path = "neo-coordinate-system" }
 neo-float = { path = "neo-float" }
 neo-geo-boolops = { path = "neo-geo-boolops" }

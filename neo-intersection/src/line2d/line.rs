@@ -1,4 +1,5 @@
 use glam::Vec2;
+use neo_bounded::traits::NeoBounded2D;
 use neo_line_segment::d2::def::LineSegment2D;
 
 use crate::ray2d::ray::RayRay2DIntersection;
@@ -14,6 +15,15 @@ pub enum LineLine2DIntersection {
     /// intersected. If you're interested in the general intersection point which may be located
     /// outside the line, consider using [`LineSegment2D::ray_intersection`]
     Intersection(Vec2),
+}
+
+impl LineLine2DIntersection {
+    pub fn intersection_point(&self) -> Option<Vec2> {
+        match self {
+            LineLine2DIntersection::Intersection(p) => Some(*p),
+            _ => None,
+        }
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
@@ -36,7 +46,9 @@ impl NeoIntersectable for LineSegment2D {
     type Output = LineLine2DIntersection;
 
     fn intersection(&self, rhs: &Self) -> Self::Output {
-        if self.aabb().intersects(&rhs.aabb()) {
+        let self_aabb = self.aabb();
+        let rhs_aabb = rhs.aabb();
+        if self_aabb.intersects(&rhs_aabb) {
             classify_aabbs_intersecting(self, rhs)
         } else {
             classify_aabbs_not_intersecting(self, rhs)
@@ -48,7 +60,8 @@ pub(crate) fn classify_aabbs_intersecting(
     l1: &LineSegment2D,
     l2: &LineSegment2D,
 ) -> LineLine2DIntersection {
-    match l1.ray().intersection(&l2.ray()) {
+    let inter = l1.ray().intersection(&l2.ray());
+    match inter {
         RayRay2DIntersection::Parallel => LineLine2DIntersection::Parallel,
         RayRay2DIntersection::Collinear => classify_collinear_overlap(l1, l2),
         RayRay2DIntersection::Intersection(intersection_point) => {

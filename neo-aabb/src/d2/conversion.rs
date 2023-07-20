@@ -1,4 +1,5 @@
 use geo::BoundingRect;
+use glam::Vec2;
 use neo_float::NeoFloat;
 use neo_geo_glam_interop::neo_float::NeoFloatConversions;
 use neo_geo_glam_interop::to_glam::ConvertToGlam;
@@ -11,6 +12,12 @@ impl<F: NeoFloat> From<(geo::Coord<F>, geo::Coord<F>)> for AABB2D {
             a.to_f64_version().to_glam().as_vec2(),
             b.to_f64_version().to_glam().as_vec2(),
         )
+    }
+}
+
+impl From<([f32; 2], [f32; 2])> for AABB2D {
+    fn from((a, b): ([f32; 2], [f32; 2])) -> Self {
+        Self::new(Vec2::from_array(a), Vec2::from_array(b))
     }
 }
 

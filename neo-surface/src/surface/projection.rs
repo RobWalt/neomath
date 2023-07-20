@@ -76,4 +76,10 @@ mod test {
         );
         assert!((projected_point.z - 0.0).abs() < 0.000_1);
     }
+
+    #[test]
+    fn matching_translation_works() {
+        let surface = create_standard_surface();
+        assert_eq!(surface.matching_translation(), Vec3::ONE);
+    }
 }

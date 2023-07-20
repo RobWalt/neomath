@@ -2,8 +2,8 @@ use glam::Vec2;
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct AABB2D {
-    pub(crate) min: Vec2,
-    pub(crate) max: Vec2,
+    pub min: Vec2,
+    pub max: Vec2,
 }
 
 fn min_max(x: f32, y: f32) -> [f32; 2] {

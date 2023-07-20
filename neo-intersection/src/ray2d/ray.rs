@@ -10,6 +10,15 @@ pub enum RayRay2DIntersection {
     Intersection(Vec2),
 }
 
+impl RayRay2DIntersection {
+    pub fn intersection_point(&self) -> Option<Vec2> {
+        match self {
+            RayRay2DIntersection::Intersection(p) => Some(*p),
+            _ => None,
+        }
+    }
+}
+
 impl NeoIntersectable for Ray2D {
     type Output = RayRay2DIntersection;
 

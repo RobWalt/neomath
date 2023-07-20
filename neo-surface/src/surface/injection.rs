@@ -1,17 +1,24 @@
+use glam::{Vec2, Vec3};
 use neo_geo_glam_interop::to_glam::ConvertToGlam;
 
 use crate::polygon3d::def::NeoPolygon3D;
 use crate::surface::def::NeoSurface;
 
 impl NeoSurface {
-    pub fn as_polygon_3d(&self) -> NeoPolygon3D {
+    pub fn injection_function(&self) -> impl Fn(Vec2) -> Vec3 {
         let rotation = self.coordinate_system.plane.injection_rotation();
         let translation = self.matching_translation();
+
+        move |pos| rotation * pos.extend(0.0) + translation
+    }
+
+    pub fn as_polygon_3d(&self) -> NeoPolygon3D {
+        let injection_func = self.injection_function();
 
         let transform_linestring = move |ls: &geo::LineString<f32>| {
             ls.points()
                 .map(|p| geo::Coord::<f32>::from(p))
-                .map(|c| rotation * c.to_glam().extend(0.0) + translation)
+                .map(|c| injection_func(c.to_glam()))
                 .collect::<Vec<_>>()
         };
 

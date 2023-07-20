@@ -1,18 +1,12 @@
 [package]
-name = "neo-intersection"
+name = "neo-bounded"
 version = "0.1.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-glam.workspace = true
 geo.workspace = true
-neo-coordinate-system.workspace = true
-neo-line-segment.workspace = true
-neo-plane.workspace = true
-neo-ray.workspace = true
-neo-surface.workspace = true
-neo-geo-glam-interop.workspace = true
 neo-aabb.workspace = true
-neo-bounded.workspace = true
+neo-line-segment.workspace = true
+neo-surface.workspace = true

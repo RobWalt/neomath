@@ -1,4 +1,5 @@
 use glam::Vec3;
+use neo_bounded::traits::NeoBounded3D;
 use neo_line_segment::d3::def::LineSegment3D;
 
 use crate::results::RayRay3DIntersection;

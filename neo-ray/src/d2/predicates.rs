@@ -9,7 +9,8 @@ impl Ray2D {
     }
 
     pub fn is_point_on_ray(&self, point: Vec2) -> bool {
-        self.distance_to_point(point) < NEO_LINE_RAY_2D_EPS
+        let dist = self.distance_to_point(point);
+        dist < NEO_LINE_RAY_2D_EPS
     }
 
     pub fn is_parallel_to(&self, other: &Self) -> bool {
