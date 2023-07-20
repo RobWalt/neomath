@@ -1,5 +1,5 @@
-use geo_glam_interop::to_geo::ConvertToGeo;
 use glam::Vec2;
+use neo_geo_glam_interop::to_geo::ConvertToGeo;
 use neo_ray::d2::def::Ray2D;
 
 use crate::d2::def::LineSegment2D;

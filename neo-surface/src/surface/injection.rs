@@ -1,4 +1,4 @@
-use geo_glam_interop::to_glam::ConvertToGlam;
+use neo_geo_glam_interop::to_glam::ConvertToGlam;
 
 use crate::polygon3d::def::NeoPolygon3D;
 use crate::surface::def::NeoSurface;

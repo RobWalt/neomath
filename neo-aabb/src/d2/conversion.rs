@@ -1,7 +1,7 @@
 use geo::BoundingRect;
-use geo_glam_interop::neo_float::NeoFloatConversions;
-use geo_glam_interop::to_glam::ConvertToGlam;
 use neo_float::NeoFloat;
+use neo_geo_glam_interop::neo_float::NeoFloatConversions;
+use neo_geo_glam_interop::to_glam::ConvertToGlam;
 
 use crate::d2::def::AABB2D;
 

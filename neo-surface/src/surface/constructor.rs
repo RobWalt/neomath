@@ -1,8 +1,8 @@
 use geo::Centroid;
-use geo_glam_interop::to_geo::ConvertToGeo;
-use geo_glam_interop::to_glam::ConvertToGlam;
 use glam::Vec3;
 use neo_coordinate_system::CoordinateSystem;
+use neo_geo_glam_interop::to_geo::ConvertToGeo;
+use neo_geo_glam_interop::to_glam::ConvertToGlam;
 use neo_line_segment::d2::def::LineSegment2D;
 
 use crate::polygon3d::def::NeoPolygon3D;

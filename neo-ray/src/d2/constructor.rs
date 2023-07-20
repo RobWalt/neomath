@@ -1,5 +1,5 @@
-use geo_glam_interop::to_glam::ConvertToGlam;
 use glam::Vec2;
+use neo_geo_glam_interop::to_glam::ConvertToGlam;
 
 use crate::d2::def::Ray2D;
 

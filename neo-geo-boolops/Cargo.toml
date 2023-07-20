@@ -7,12 +7,7 @@ edition = "2021"
 
 [dependencies]
 geo.workspace = true
-geo-glam-interop.workspace = true
-glam.workspace = true
 neo-float.workspace = true
-neo-line-segment.workspace = true
-neo-tessellation.workspace = true
-neo-intersection.workspace = true
 
 [dev-dependencies]
 rand.workspace = true

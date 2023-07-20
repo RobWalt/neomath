@@ -1,6 +1,6 @@
-use geo_glam_interop::to_geo::ConvertToGeo;
-use geo_glam_interop::to_glam::ConvertToGlam;
 use glam::Vec3;
+use neo_geo_glam_interop::to_geo::ConvertToGeo;
+use neo_geo_glam_interop::to_glam::ConvertToGlam;
 
 use crate::surface::def::NeoSurface;
 

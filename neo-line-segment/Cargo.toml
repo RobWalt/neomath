@@ -6,8 +6,8 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-geo = { workspace = true }
+geo.workspace = true
 glam = { workspace = true, features = ["approx"]}
-geo-glam-interop = { path = "../geo-glam-interop" }
+neo-geo-glam-interop.workspace = true
 neo-ray.workspace = true
 neo-aabb.workspace = true

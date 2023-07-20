@@ -1,11 +1,11 @@
 [workspace]
 
 members = [
-  "geo-glam-interop",
   "neo-aabb",
   "neo-coordinate-system",
   "neo-float",
   "neo-geo-boolops",
+  "neo-geo-glam-interop",
   "neo-intersection",
   "neo-line-segment",
   "neo-plane",
@@ -16,17 +16,17 @@ members = [
 
 [workspace.dependencies]
 # needed
-geo = { version = "0.25", default-features = false }
+geo = { version = "0.26", default-features = false }
 glam = "0.24"
 num-traits = { version = "0.2" }
 spade = "2.2"
 
 # workspace crates
-geo-glam-interop = { path = "geo-glam-interop" }
 neo-aabb = { path = "neo-aabb" }
 neo-coordinate-system = { path = "neo-coordinate-system" }
 neo-float = { path = "neo-float" }
 neo-geo-boolops = { path = "neo-geo-boolops" }
+neo-geo-glam-interop = { path = "neo-geo-glam-interop" }
 neo-intersection = { path = "neo-intersection" }
 neo-line-segment = { path = "neo-line-segment" }
 neo-plane = { path = "neo-plane" }
