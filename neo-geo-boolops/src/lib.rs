@@ -2,16 +2,16 @@ use geo::{BooleanOps, MapCoords, OpType};
 use neo_float::NeoFloat;
 
 pub trait NeoGeoBoolops<F: NeoFloat> {
-    fn boolop(&self, other: &Self, op: OpType) -> geo::MultiPolygon<F>;
+    fn neo_boolop(&self, other: &Self, op: OpType) -> geo::MultiPolygon<F>;
 
-    fn union(&self, other: &Self) -> geo::MultiPolygon<F> {
-        self.boolop(other, OpType::Union)
+    fn neo_union(&self, other: &Self) -> geo::MultiPolygon<F> {
+        self.neo_boolop(other, OpType::Union)
     }
-    fn intersection(&self, other: &Self) -> geo::MultiPolygon<F> {
-        self.boolop(other, OpType::Intersection)
+    fn neo_intersection(&self, other: &Self) -> geo::MultiPolygon<F> {
+        self.neo_boolop(other, OpType::Intersection)
     }
-    fn difference(&self, other: &Self) -> geo::MultiPolygon<F> {
-        self.boolop(other, OpType::Difference)
+    fn neo_difference(&self, other: &Self) -> geo::MultiPolygon<F> {
+        self.neo_boolop(other, OpType::Difference)
     }
 }
 
@@ -21,7 +21,7 @@ where
     BoolableMapped: BooleanOps<Scalar = f64> + MapCoords<f64, F, Output = Boolable>,
     Boolable: BooleanOps<Scalar = F> + MapCoords<F, f64, Output = BoolableMapped>,
 {
-    fn boolop(&self, other: &Self, op: OpType) -> geo::MultiPolygon<F> {
+    fn neo_boolop(&self, other: &Self, op: OpType) -> geo::MultiPolygon<F> {
         self.try_boolean_op(other, op)
             .or_else(|_| {
                 let s = self.map_coords(coord_upcast);
