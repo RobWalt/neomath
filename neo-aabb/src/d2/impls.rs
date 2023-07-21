@@ -15,6 +15,14 @@ impl AABB2D {
         self.min.y..=self.max.y
     }
 
+    pub fn center(&self) -> Vec2 {
+        (self.max + self.min) * 0.5
+    }
+
+    pub fn half_extends(&self) -> Vec2 {
+        (self.max - self.min) * 0.5
+    }
+
     pub fn contains(&self, point: Vec2) -> bool {
         let rect = self.as_rect();
         let point = point.to_geo();
@@ -22,10 +30,14 @@ impl AABB2D {
     }
 
     pub fn intersects(&self, other: &Self) -> bool {
-        self.contains(other.min)
-            || self.contains(other.max)
-            || other.contains(self.min)
-            || other.contains(self.max)
+        let center_diff = (self.center() - other.center()).abs();
+        let combined_half_extends = self.half_extends() + other.half_extends();
+
+        center_diff
+            .to_array()
+            .iter()
+            .zip(combined_half_extends.to_array().iter())
+            .all(|(dist, max_dist)| dist <= max_dist)
     }
 
     pub fn as_rect(&self) -> geo::Rect<f32> {
@@ -107,5 +119,12 @@ mod aabb_impls {
         let aabb_big = AABB2D::new(Vec2::ZERO, Vec2::ONE * 3.0);
         let aabb_small = AABB2D::new(Vec2::ONE, Vec2::ONE * 2.0);
         assert!(aabb_big.intersects(&aabb_small))
+    }
+
+    #[test]
+    fn corners_not_contained_in_each_other_works() {
+        let aabb_a = AABB2D::new(-Vec2::X - Vec2::Y * 0.5, Vec2::X + Vec2::Y * 0.5);
+        let aabb_b = AABB2D::new(-Vec2::X * 0.5 - Vec2::Y, Vec2::X * 0.5 + Vec2::Y);
+        assert!(aabb_a.intersects(&aabb_b))
     }
 }

@@ -26,7 +26,8 @@ pub enum SurfaceRay3DIntersectionParts {
 impl NeoIntersectable<Ray3D> for NeoSurface {
     type Output = SurfaceRay3DIntersection;
     fn intersection(&self, rhs: &Ray3D) -> Self::Output {
-        match self.coordinate_system.intersection(rhs) {
+        let inter = self.coordinate_system.intersection(rhs);
+        match inter {
             RayCoordSys3DIntersection::Parallel => SurfaceRay3DIntersection::Parallel,
             RayCoordSys3DIntersection::Point(p) => point_case_analysis(self, p),
             RayCoordSys3DIntersection::Ray(ray) => contained_ray_case_analysis(self, ray),
@@ -209,5 +210,23 @@ mod surface_ray {
 
         let inter = surface.intersection(&ray);
         assert_eq!(inter, SurfaceRay3DIntersection::Skewed);
+    }
+
+    #[test]
+    fn ray_in_surface_two_intersection_lines_works() {
+        let surface = standard_surface_rect_with_hole();
+        let local_x = surface.coordinate_system.plane.local_x;
+        let local_y = surface.coordinate_system.plane.local_y;
+        let ray = Ray3D::new(Vec3::ONE, local_x + local_y);
+
+        let inter = surface.intersection(&ray);
+        match inter {
+            SurfaceRay3DIntersection::Parts(parts) => {
+                assert_eq!(parts.len(), 2);
+                assert!(matches!(parts[0], SurfaceRay3DIntersectionParts::Line(_)));
+                assert!(matches!(parts[1], SurfaceRay3DIntersectionParts::Line(_)));
+            }
+            _ => panic!("expected {inter:?} to be intersection parts containing two lines"),
+        }
     }
 }

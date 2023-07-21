@@ -48,7 +48,8 @@ impl NeoIntersectable for LineSegment2D {
     fn intersection(&self, rhs: &Self) -> Self::Output {
         let self_aabb = self.aabb();
         let rhs_aabb = rhs.aabb();
-        if self_aabb.intersects(&rhs_aabb) {
+        let is_inter = self_aabb.intersects(&rhs_aabb);
+        if is_inter {
             classify_aabbs_intersecting(self, rhs)
         } else {
             classify_aabbs_not_intersecting(self, rhs)
