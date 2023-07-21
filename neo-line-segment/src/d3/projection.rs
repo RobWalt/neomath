@@ -9,7 +9,7 @@ impl LineSegment3D {
     }
 
     pub fn scalar_of(&self, point: Vec3) -> f32 {
-        self.project_point(point).length() / self.direction().length()
+        self.project_point(point - self.src).length() / self.direction().length()
     }
 
     /// Inspired by the SDF formula of a line
@@ -47,4 +47,11 @@ fn scalar_of_works_two_thirds() {
     let p = (Vec3::ONE - Vec3::Z) * 1.5;
     let l = LineSegment3D::UNIT_X.scale_dst_by(2.0);
     assert_eq!(l.scalar_of(p), 0.75);
+}
+
+#[test]
+fn scalar_of_works_negative_part() {
+    let l = LineSegment3D::new(Vec3::NEG_ONE, Vec3::ONE);
+    let p = Vec3::ONE;
+    assert_eq!(l.scalar_of(p), 1.0);
 }

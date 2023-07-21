@@ -4,6 +4,4 @@ This is some glue for `geo` and `glam` to make computational geometry in rust ea
 
 # licenses 
 
-This project is licensed under the AGPLv3+ license for everyone.
-
-The only current exception to this is Metabuild GmbH which can use all the files in this repository under the MPL license.
+This project is licensed under the standard rust ecosystem Apache & MIT dual license.

@@ -1,4 +1,4 @@
-use geo::{Contains, LinesIter};
+use geo::{Contains, Intersects, LinesIter};
 use glam::Vec2;
 use neo_geo_glam_interop::to_geo::ConvertToGeo;
 use neo_line_segment::d2::def::LineSegment2D;
@@ -28,8 +28,17 @@ impl NeoIntersectable<geo::Polygon<f32>> for LineSegment2D {
         let mut points_with_scalars = rhs
             .lines_iter()
             .map(LineSegment2D::from)
-            .filter_map(|l| self.intersection(&l).intersection_point())
+            .filter_map(|l| {
+                let inter = self.intersection(&l);
+                inter.intersection_point()
+            })
             .map(|p| (self.scalar_of(p), p))
+            .chain(
+                [0.0_f32, 1.0]
+                    .into_iter()
+                    .zip(self.array().into_iter())
+                    .filter(|(_, c)| rhs.intersects(&c.to_geo())),
+            )
             .fold(vec![], |mut res, elem| {
                 if !res
                     .iter()
@@ -38,14 +47,6 @@ impl NeoIntersectable<geo::Polygon<f32>> for LineSegment2D {
                     res.push(elem);
                 }
                 res
-            });
-
-        [0.0_f32, 1.0]
-            .into_iter()
-            .zip(self.array().into_iter())
-            .filter(|(_, c)| rhs.contains(&c.to_geo()))
-            .for_each(|elem| {
-                points_with_scalars.push(elem);
             });
 
         // sort the intersection points by scalar of the intersection line

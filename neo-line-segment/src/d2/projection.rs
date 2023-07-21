@@ -8,7 +8,7 @@ impl LineSegment2D {
     }
 
     pub fn scalar_of(&self, point: Vec2) -> f32 {
-        self.project_point(point).length() / self.direction().length()
+        self.project_point(point - self.src).length() / self.direction().length()
     }
 
     /// Inspired by the SDF formula of a line
@@ -46,4 +46,12 @@ fn scalar_of_works_two_thirds() {
     let p = Vec2::ONE * 1.5;
     let l = LineSegment2D::UNIT_X.scale_dst_by(2.0);
     assert_eq!(l.scalar_of(p), 0.75);
+}
+
+#[test]
+fn scalar_of_works_negative_part() {
+    let l = LineSegment2D::new(Vec2::NEG_ONE, Vec2::ONE);
+    let p = Vec2::ONE;
+
+    assert_eq!(l.scalar_of(p), 1.0);
 }

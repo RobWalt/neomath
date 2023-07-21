@@ -60,7 +60,8 @@ fn aabb_line_case_analysis(
     aabb_line: LineSegment2D,
     rhs: &geo::Polygon<f32>,
 ) -> RayPolygon2DIntersection {
-    match aabb_line.intersection(rhs) {
+    let inter = aabb_line.intersection(rhs);
+    match inter {
         LinePolygon2DIntersection::None => RayPolygon2DIntersection::None,
         LinePolygon2DIntersection::Point(p) => RayPolygon2DIntersection::Point(p),
         LinePolygon2DIntersection::Line(l) => RayPolygon2DIntersection::Line(l),
