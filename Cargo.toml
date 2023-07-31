@@ -19,7 +19,6 @@ members = [
 # needed
 geo = { version = "0.26", default-features = false }
 glam = "0.24"
-num-traits = { version = "0.2" }
 spade = "2.2"
 
 # workspace crates
@@ -38,7 +37,6 @@ neo-tessellation = { path = "neo-tessellation" }
 
 # dev
 geo-svg = "0.5"
-paste = "1.0"
 rand = "0.8"
 serde_json = "1.0"
 
