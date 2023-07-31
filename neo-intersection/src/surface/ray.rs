@@ -1,11 +1,10 @@
 use glam::Vec3;
 use neo_geo_glam_interop::to_glam::ConvertToGlam;
-use neo_line_segment::d3::def::LineSegment3D;
 use neo_ray::d2::def::Ray2D;
 use neo_ray::d3::def::Ray3D;
 use neo_surface::surface::def::NeoSurface;
 
-use crate::ray2d::polygon::RayPolygon2DIntersectionPart;
+use crate::line_intersection_parts::Line3DIntersectionParts;
 use crate::results::RayCoordSys3DIntersection;
 use crate::trait_def::NeoIntersectable;
 
@@ -14,13 +13,7 @@ pub enum SurfaceRay3DIntersection {
     Skewed,
     Parallel,
     Point(Vec3),
-    Parts(Vec<SurfaceRay3DIntersectionParts>),
-}
-
-#[derive(Debug, Clone, Copy, PartialEq)]
-pub enum SurfaceRay3DIntersectionParts {
-    Point(Vec3),
-    Line(LineSegment3D),
+    Parts(Vec<Line3DIntersectionParts>),
 }
 
 impl NeoIntersectable<Ray3D> for NeoSurface {
@@ -58,21 +51,9 @@ fn contained_ray_case_analysis(surface: &NeoSurface, ray: Ray3D) -> SurfaceRay3D
     } else {
         let injection_func = surface.injection_function();
 
-        let inject_part_func = move |part| match part {
-            RayPolygon2DIntersectionPart::Point(p) => {
-                SurfaceRay3DIntersectionParts::Point(injection_func(p))
-            }
-            RayPolygon2DIntersectionPart::Line(l) => {
-                let src = injection_func(l.src);
-                let dst = injection_func(l.dst);
-                let line3d = LineSegment3D::new(src, dst);
-                SurfaceRay3DIntersectionParts::Line(line3d)
-            }
-        };
-
         let injected_parts = inter_parts
             .into_iter()
-            .map(inject_part_func)
+            .map(|part| part.inject_with(&injection_func))
             .collect::<Vec<_>>();
 
         SurfaceRay3DIntersection::Parts(injected_parts)
@@ -88,7 +69,7 @@ mod surface_ray {
     use neo_ray::d3::def::Ray3D;
     use neo_surface::surface::def::NeoSurface;
 
-    use crate::surface::ray::{SurfaceRay3DIntersection, SurfaceRay3DIntersectionParts};
+    use crate::surface::ray::{Line3DIntersectionParts, SurfaceRay3DIntersection};
     use crate::trait_def::NeoIntersectable;
 
     fn standard_surface(shape: geo::Polygon<f32>) -> NeoSurface {
@@ -178,7 +159,7 @@ mod surface_ray {
         match inter {
             SurfaceRay3DIntersection::Parts(parts) => {
                 assert_eq!(parts.len(), 1);
-                assert!(matches!(parts[0], SurfaceRay3DIntersectionParts::Line(_)));
+                assert!(matches!(parts[0], Line3DIntersectionParts::Line(_)));
             }
             _ => panic!("expected {inter:?} to be intersection parts containing one line"),
         }
@@ -195,7 +176,7 @@ mod surface_ray {
         match inter {
             SurfaceRay3DIntersection::Parts(parts) => {
                 assert_eq!(parts.len(), 1);
-                assert!(matches!(parts[0], SurfaceRay3DIntersectionParts::Point(_)));
+                assert!(matches!(parts[0], Line3DIntersectionParts::Point(_)));
             }
             _ => panic!("expected {inter:?} to be intersection parts containing one point"),
         }
@@ -223,8 +204,8 @@ mod surface_ray {
         match inter {
             SurfaceRay3DIntersection::Parts(parts) => {
                 assert_eq!(parts.len(), 2);
-                assert!(matches!(parts[0], SurfaceRay3DIntersectionParts::Line(_)));
-                assert!(matches!(parts[1], SurfaceRay3DIntersectionParts::Line(_)));
+                assert!(matches!(parts[0], Line3DIntersectionParts::Line(_)));
+                assert!(matches!(parts[1], Line3DIntersectionParts::Line(_)));
             }
             _ => panic!("expected {inter:?} to be intersection parts containing two lines"),
         }

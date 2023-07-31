@@ -4,6 +4,7 @@ use neo_geo_glam_interop::to_geo::ConvertToGeo;
 use neo_line_segment::d2::def::LineSegment2D;
 
 use crate::float_ord_cmp;
+use crate::line_intersection_parts::Line2DIntersectionParts;
 use crate::trait_def::NeoIntersectable;
 
 #[derive(Debug, PartialEq)]
@@ -11,13 +12,7 @@ pub enum LinePolygon2DIntersection {
     None,
     Point(Vec2),
     Line(LineSegment2D),
-    Parts(Vec<LinePolygon2DIntersectionPart>),
-}
-
-#[derive(Debug, PartialEq)]
-pub enum LinePolygon2DIntersectionPart {
-    Point(Vec2),
-    Line(LineSegment2D),
+    Parts(Vec<Line2DIntersectionParts>),
 }
 
 impl NeoIntersectable<geo::Polygon<f32>> for LineSegment2D {
@@ -57,8 +52,8 @@ impl NeoIntersectable<geo::Polygon<f32>> for LineSegment2D {
         while let Some((_, new_point)) = points_with_scalars.pop() {
             // get last point we added to the parts (if any exists)
             let last_point = parts.last().map(|last_part| match last_part {
-                LinePolygon2DIntersectionPart::Point(p) => *p,
-                LinePolygon2DIntersectionPart::Line(l) => l.dst,
+                Line2DIntersectionParts::Point(p) => *p,
+                Line2DIntersectionParts::Line(l) => l.dst,
             });
 
             // only consider the last point if the line would be contained in the poly (checking
@@ -72,23 +67,23 @@ impl NeoIntersectable<geo::Polygon<f32>> for LineSegment2D {
                 // else if the last part was a line we keep it and continue drawing from it
                 if parts
                     .last()
-                    .is_some_and(|part| matches!(part, LinePolygon2DIntersectionPart::Point(_)))
+                    .is_some_and(|part| matches!(part, Line2DIntersectionParts::Point(_)))
                 {
                     parts.pop();
                 }
-                parts.push(LinePolygon2DIntersectionPart::Line(LineSegment2D::new(
+                parts.push(Line2DIntersectionParts::Line(LineSegment2D::new(
                     last_point, new_point,
                 )))
             } else {
-                parts.push(LinePolygon2DIntersectionPart::Point(new_point))
+                parts.push(Line2DIntersectionParts::Point(new_point))
             }
         }
 
         match parts.len() {
             0 => LinePolygon2DIntersection::None,
             1 => match parts[0] {
-                LinePolygon2DIntersectionPart::Point(p) => LinePolygon2DIntersection::Point(p),
-                LinePolygon2DIntersectionPart::Line(l) => LinePolygon2DIntersection::Line(l),
+                Line2DIntersectionParts::Point(p) => LinePolygon2DIntersection::Point(p),
+                Line2DIntersectionParts::Line(l) => LinePolygon2DIntersection::Line(l),
             },
             _ => LinePolygon2DIntersection::Parts(parts),
         }
@@ -101,7 +96,7 @@ mod line_polygon {
     use neo_geo_glam_interop::to_geo::ConvertToGeo;
     use neo_line_segment::d2::def::LineSegment2D;
 
-    use crate::line2d::polygon::{LinePolygon2DIntersection, LinePolygon2DIntersectionPart};
+    use crate::line2d::polygon::{Line2DIntersectionParts, LinePolygon2DIntersection};
     use crate::trait_def::NeoIntersectable;
 
     fn generate_rect_with_hole() -> geo::Polygon<f32> {
@@ -174,8 +169,8 @@ mod line_polygon {
         assert_eq!(
             line.intersection(&rect_with_hole),
             LinePolygon2DIntersection::Parts(vec![
-                LinePolygon2DIntersectionPart::Line(LineSegment2D::new(Vec2::Y, Vec2::Y + Vec2::X)),
-                LinePolygon2DIntersectionPart::Line(
+                Line2DIntersectionParts::Line(LineSegment2D::new(Vec2::Y, Vec2::Y + Vec2::X)),
+                Line2DIntersectionParts::Line(
                     LineSegment2D::new(Vec2::Y, Vec2::Y + Vec2::X).offset_line_by(Vec2::X * 2.0)
                 ),
             ])
@@ -190,8 +185,8 @@ mod line_polygon {
         assert_eq!(
             line.intersection(&rect_with_hole),
             LinePolygon2DIntersection::Parts(vec![
-                LinePolygon2DIntersectionPart::Line(LineSegment2D::new(Vec2::Y, Vec2::Y + Vec2::X)),
-                LinePolygon2DIntersectionPart::Point(Vec2::Y + Vec2::X * 2.0),
+                Line2DIntersectionParts::Line(LineSegment2D::new(Vec2::Y, Vec2::Y + Vec2::X)),
+                Line2DIntersectionParts::Point(Vec2::Y + Vec2::X * 2.0),
             ])
         )
     }
@@ -204,10 +199,10 @@ mod line_polygon {
         assert_eq!(
             line.intersection(&rect_with_hole),
             LinePolygon2DIntersection::Parts(vec![
-                LinePolygon2DIntersectionPart::Line(
+                Line2DIntersectionParts::Line(
                     LineSegment2D::new(Vec2::ZERO, Vec2::ONE).offset_line_by(Vec2::Y)
                 ),
-                LinePolygon2DIntersectionPart::Line(
+                Line2DIntersectionParts::Line(
                     LineSegment2D::new(Vec2::ZERO, Vec2::ONE).offset_line_by(Vec2::Y + Vec2::ONE)
                 ),
             ])

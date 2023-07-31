@@ -16,3 +16,4 @@ neo-surface.workspace = true
 neo-geo-glam-interop.workspace = true
 neo-aabb.workspace = true
 neo-bounded.workspace = true
+neo-geo-boolops.workspace = true

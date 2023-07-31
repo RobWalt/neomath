@@ -5,7 +5,8 @@ use neo_geo_glam_interop::to_geo::ConvertToGeo;
 use neo_line_segment::d2::def::LineSegment2D;
 use neo_ray::d2::def::Ray2D;
 
-use crate::line2d::polygon::{LinePolygon2DIntersection, LinePolygon2DIntersectionPart};
+use crate::line2d::polygon::LinePolygon2DIntersection;
+use crate::line_intersection_parts::Line2DIntersectionParts;
 use crate::ray2d::aabb::RayAABB2DIntersection;
 use crate::trait_def::NeoIntersectable;
 
@@ -14,24 +15,18 @@ pub enum RayPolygon2DIntersection {
     None,
     Point(Vec2),
     Line(LineSegment2D),
-    Parts(Vec<RayPolygon2DIntersectionPart>),
+    Parts(Vec<Line2DIntersectionParts>),
 }
 
 impl RayPolygon2DIntersection {
-    pub fn list_parts(self) -> Vec<RayPolygon2DIntersectionPart> {
+    pub fn list_parts(self) -> Vec<Line2DIntersectionParts> {
         match self {
             RayPolygon2DIntersection::None => vec![],
-            RayPolygon2DIntersection::Point(p) => vec![RayPolygon2DIntersectionPart::Point(p)],
-            RayPolygon2DIntersection::Line(l) => vec![RayPolygon2DIntersectionPart::Line(l)],
+            RayPolygon2DIntersection::Point(p) => vec![Line2DIntersectionParts::Point(p)],
+            RayPolygon2DIntersection::Line(l) => vec![Line2DIntersectionParts::Line(l)],
             RayPolygon2DIntersection::Parts(ps) => ps,
         }
     }
-}
-
-#[derive(Debug, PartialEq)]
-pub enum RayPolygon2DIntersectionPart {
-    Point(Vec2),
-    Line(LineSegment2D),
 }
 
 impl NeoIntersectable<geo::Polygon<f32>> for Ray2D {
@@ -65,18 +60,8 @@ fn aabb_line_case_analysis(
         LinePolygon2DIntersection::None => RayPolygon2DIntersection::None,
         LinePolygon2DIntersection::Point(p) => RayPolygon2DIntersection::Point(p),
         LinePolygon2DIntersection::Line(l) => RayPolygon2DIntersection::Line(l),
-        LinePolygon2DIntersection::Parts(ps) => RayPolygon2DIntersection::Parts(convert_parts(ps)),
+        LinePolygon2DIntersection::Parts(ps) => RayPolygon2DIntersection::Parts(ps),
     }
-}
-
-fn convert_parts(parts: Vec<LinePolygon2DIntersectionPart>) -> Vec<RayPolygon2DIntersectionPart> {
-    parts
-        .into_iter()
-        .map(|part| match part {
-            LinePolygon2DIntersectionPart::Point(p) => RayPolygon2DIntersectionPart::Point(p),
-            LinePolygon2DIntersectionPart::Line(l) => RayPolygon2DIntersectionPart::Line(l),
-        })
-        .collect::<Vec<_>>()
 }
 
 #[cfg(test)]
@@ -86,7 +71,8 @@ mod ray_polygon {
     use neo_line_segment::d2::def::LineSegment2D;
     use neo_ray::d2::def::Ray2D;
 
-    use crate::ray2d::polygon::{RayPolygon2DIntersection, RayPolygon2DIntersectionPart};
+    use crate::line_intersection_parts::Line2DIntersectionParts;
+    use crate::ray2d::polygon::RayPolygon2DIntersection;
     use crate::trait_def::NeoIntersectable;
 
     fn generate_rect_with_hole() -> geo::Polygon<f32> {
@@ -159,8 +145,8 @@ mod ray_polygon {
         assert_eq!(
             ray.intersection(&rect_with_hole),
             RayPolygon2DIntersection::Parts(vec![
-                RayPolygon2DIntersectionPart::Line(LineSegment2D::new(Vec2::Y, Vec2::Y + Vec2::X)),
-                RayPolygon2DIntersectionPart::Line(
+                Line2DIntersectionParts::Line(LineSegment2D::new(Vec2::Y, Vec2::Y + Vec2::X)),
+                Line2DIntersectionParts::Line(
                     LineSegment2D::new(Vec2::Y, Vec2::Y + Vec2::X).offset_line_by(Vec2::X * 2.0)
                 ),
             ])
@@ -175,8 +161,8 @@ mod ray_polygon {
         assert_eq!(
             ray.intersection(&rect_with_hole),
             RayPolygon2DIntersection::Parts(vec![
-                RayPolygon2DIntersectionPart::Line(LineSegment2D::new(Vec2::Y, Vec2::Y + Vec2::X)),
-                RayPolygon2DIntersectionPart::Line(
+                Line2DIntersectionParts::Line(LineSegment2D::new(Vec2::Y, Vec2::Y + Vec2::X)),
+                Line2DIntersectionParts::Line(
                     LineSegment2D::new(Vec2::Y, Vec2::Y + Vec2::X).offset_line_by(Vec2::X * 2.0)
                 ),
             ])

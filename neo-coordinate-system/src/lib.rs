@@ -38,7 +38,7 @@ impl CoordinateSystem {
 
 impl PartialEq for CoordinateSystem {
     fn eq(&self, other: &Self) -> bool {
-        self.plane == other.plane && self.plane.is_point_in_plane(other.origin)
+        self.plane == other.plane && self.is_point_in_coordinate_system(other.origin)
     }
 }
 
@@ -57,64 +57,93 @@ impl CoordinateSystem {
     }
 }
 
-#[test]
-fn partial_eq_works() {
-    let ax1 = Vec3::ONE;
-    let ax2 = -Vec3::X + Vec3::Y + Vec3::Z;
+#[cfg(test)]
+mod coord_sys {
+    use glam::Vec3;
 
-    let c1 = CoordinateSystem::from_origin_and_axis(Vec3::ZERO, ax1, ax2);
-    let c2 = CoordinateSystem::from_origin_and_axis(ax1 + ax2, ax1, ax2);
+    use crate::CoordinateSystem;
 
-    assert_eq!(c1, c2);
-}
+    #[test]
+    fn partial_eq_works() {
+        let ax1 = Vec3::ONE;
+        let ax2 = -Vec3::X + Vec3::Y + Vec3::Z;
 
-#[test]
-fn partial_eq_linear_comb_works() {
-    let ax1 = Vec3::ONE;
-    let ax2 = -Vec3::X + Vec3::Y + Vec3::Z;
+        let c1 = CoordinateSystem::from_origin_and_axis(Vec3::ZERO, ax1, ax2);
+        let c2 = CoordinateSystem::from_origin_and_axis(ax1 + ax2, ax1, ax2);
 
-    let c1 = CoordinateSystem::from_origin_and_axis(Vec3::ZERO, ax1, ax2);
-    let c2 = CoordinateSystem::from_origin_and_axis(ax1 / 7.33 + ax2 * 0.333, ax1, ax2);
+        assert_eq!(c1, c2);
+    }
 
-    assert_eq!(c1, c2);
-}
+    #[test]
+    fn partial_eq_non_zero_origin_fails_correctly() {
+        let ax1 = Vec3::ONE;
+        let ax2 = -Vec3::X + Vec3::Y + Vec3::Z;
 
-#[test]
-fn origin_on_plane_works() {
-    let ax1 = Vec3::ONE;
-    let ax2 = -Vec3::X + Vec3::Y + Vec3::Z;
-    let origin = Vec3::Y * 0.25;
-    let c = CoordinateSystem::from_origin_and_axis(origin, ax1, ax2);
+        let c1 = CoordinateSystem::from_origin_and_axis(Vec3::X + Vec3::Y, ax1, ax2);
+        let c2 = CoordinateSystem::from_origin_and_axis(Vec3::ONE * 10.0, ax1, ax2);
 
-    assert!(c.is_point_in_coordinate_system(origin));
-}
+        assert_ne!(c1, c2);
+    }
 
-#[test]
-fn axis_sum_on_plane_works() {
-    let ax1 = Vec3::ONE;
-    let ax2 = -Vec3::X + Vec3::Y + Vec3::Z;
-    let origin = Vec3::Y * 0.25;
-    let c = CoordinateSystem::from_origin_and_axis(origin, ax1, ax2);
+    #[test]
+    fn partial_eq_non_zero_origin_works() {
+        let ax1 = Vec3::ONE;
+        let ax2 = -Vec3::X + Vec3::Y + Vec3::Z;
 
-    assert!(c.is_point_in_coordinate_system(origin + ax1 + ax2));
-}
+        let c1 = CoordinateSystem::from_origin_and_axis(Vec3::X, ax1, ax2);
+        let c2 = CoordinateSystem::from_origin_and_axis(ax1 + ax2 + Vec3::X, ax1, ax2);
 
-#[test]
-fn scaled_axis_sum_on_plane_works() {
-    let ax1 = Vec3::ONE;
-    let ax2 = -Vec3::X + Vec3::Y + Vec3::Z;
-    let origin = Vec3::Y * 0.25;
-    let c = CoordinateSystem::from_origin_and_axis(origin, ax1, ax2);
+        assert_eq!(c1, c2);
+    }
 
-    assert!(c.is_point_in_coordinate_system(origin + ax1 / 7.0 + ax2 * 0.333));
-}
+    #[test]
+    fn partial_eq_linear_comb_works() {
+        let ax1 = Vec3::ONE;
+        let ax2 = -Vec3::X + Vec3::Y + Vec3::Z;
 
-#[test]
-fn axis_diff_on_plane_works() {
-    let ax1 = Vec3::ONE;
-    let ax2 = -Vec3::X + Vec3::Y + Vec3::Z;
-    let origin = Vec3::Y * 0.25;
-    let c = CoordinateSystem::from_origin_and_axis(origin, ax1, ax2);
+        let c1 = CoordinateSystem::from_origin_and_axis(Vec3::ZERO, ax1, ax2);
+        let c2 = CoordinateSystem::from_origin_and_axis(ax1 / 7.33 + ax2 * 0.333, ax1, ax2);
 
-    assert!(c.is_point_in_coordinate_system(origin - ax1 - ax2));
+        assert_eq!(c1, c2);
+    }
+
+    #[test]
+    fn origin_on_plane_works() {
+        let ax1 = Vec3::ONE;
+        let ax2 = -Vec3::X + Vec3::Y + Vec3::Z;
+        let origin = Vec3::Y * 0.25;
+        let c = CoordinateSystem::from_origin_and_axis(origin, ax1, ax2);
+
+        assert!(c.is_point_in_coordinate_system(origin));
+    }
+
+    #[test]
+    fn axis_sum_on_plane_works() {
+        let ax1 = Vec3::ONE;
+        let ax2 = -Vec3::X + Vec3::Y + Vec3::Z;
+        let origin = Vec3::Y * 0.25;
+        let c = CoordinateSystem::from_origin_and_axis(origin, ax1, ax2);
+
+        assert!(c.is_point_in_coordinate_system(origin + ax1 + ax2));
+    }
+
+    #[test]
+    fn scaled_axis_sum_on_plane_works() {
+        let ax1 = Vec3::ONE;
+        let ax2 = -Vec3::X + Vec3::Y + Vec3::Z;
+        let origin = Vec3::Y * 0.25;
+        let c = CoordinateSystem::from_origin_and_axis(origin, ax1, ax2);
+
+        assert!(c.is_point_in_coordinate_system(origin + ax1 / 7.0 + ax2 * 0.333));
+    }
+
+    #[test]
+    fn axis_diff_on_plane_works() {
+        let ax1 = Vec3::ONE;
+        let ax2 = -Vec3::X + Vec3::Y + Vec3::Z;
+        let origin = Vec3::Y * 0.25;
+        let c = CoordinateSystem::from_origin_and_axis(origin, ax1, ax2);
+
+        assert!(c.is_point_in_coordinate_system(origin - ax1 - ax2));
+    }
 }
