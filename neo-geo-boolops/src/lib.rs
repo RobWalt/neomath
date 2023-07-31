@@ -15,21 +15,49 @@ pub trait NeoGeoBoolops<F: NeoFloat> {
     }
 }
 
-impl<F, Boolable, BoolableMapped> NeoGeoBoolops<F> for Boolable
+impl<F, Boolable, BoolableMappedF64, BoolableMappedF> NeoGeoBoolops<F> for Boolable
 where
     F: NeoFloat,
-    BoolableMapped: BooleanOps<Scalar = f64> + MapCoords<f64, F, Output = Boolable>,
-    Boolable: BooleanOps<Scalar = F> + MapCoords<F, f64, Output = BoolableMapped>,
+    BoolableMappedF64: BooleanOps<Scalar = f64> + MapCoords<f64, F, Output = Boolable>,
+    BoolableMappedF: BooleanOps<Scalar = F>,
+    Boolable: BooleanOps<Scalar = F>
+        + MapCoords<F, f64, Output = BoolableMappedF64>
+        + MapCoords<F, F, Output = BoolableMappedF>,
 {
     fn neo_boolop(&self, other: &Self, op: OpType) -> Option<geo::MultiPolygon<F>> {
-        self.try_boolean_op(other, op)
+        let res = self
+            .try_boolean_op(other, op)
             .or_else(|_| {
                 let s = self.map_coords(coord_upcast);
                 let o = other.map_coords(coord_upcast);
                 s.try_boolean_op(&o, op)
                     .map(|res| res.map_coords(coord_downcast))
             })
-            .ok()
+            .ok();
+        #[cfg(feature = "random-retry")]
+        let res = {
+            use rand::Rng;
+            let offset_range = || -0.000001..=0.000001;
+            let random_coord = || {
+                let mut rng = rand::thread_rng();
+                geo::Coord::<F> {
+                    x: F::from_raw_f64(rng.gen_range(offset_range())),
+                    y: F::from_raw_f64(rng.gen_range(offset_range())),
+                }
+            };
+            let mut max_retries = 10;
+            let mut res = res;
+            while res.is_none() && max_retries > 0 {
+                res = res.or_else(|| {
+                    let s = self.map_coords(|c| c + random_coord());
+                    let o = other.map_coords(|c| c + random_coord());
+                    s.try_boolean_op(&o, op).ok()
+                });
+                max_retries -= 1;
+            }
+            res
+        };
+        res
     }
 }
 

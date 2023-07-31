@@ -8,8 +8,12 @@ edition = "2021"
 [dependencies]
 geo.workspace = true
 neo-float.workspace = true
+rand = { workspace = true, optional = true }
 
 [dev-dependencies]
 rand.workspace = true
 serde_json.workspace = true
 geo-svg.workspace = true
+
+[features]
+random-retry = ["rand"]
