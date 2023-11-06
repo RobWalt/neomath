@@ -1,23 +1,21 @@
 [workspace]
+resolver = "2"
 
 members = [
   "neo-aabb",
   "neo-bounded",
   "neo-coordinate-system",
-  "neo-float",
-  "neo-geo-boolops",
   "neo-geo-glam-interop",
   "neo-intersection",
   "neo-line-segment",
   "neo-plane",
   "neo-ray",
   "neo-surface",
-  "neo-tessellation",
 ]
 
 [workspace.dependencies]
 # needed
-geo = { version = "0.26", default-features = false }
+geo = { version = "0.26" }
 glam = "0.24"
 spade = "2.2"
 
@@ -25,20 +23,17 @@ spade = "2.2"
 neo-aabb = { path = "neo-aabb" }
 neo-bounded = { path = "neo-bounded" }
 neo-coordinate-system = { path = "neo-coordinate-system" }
-neo-float = { path = "neo-float" }
-neo-geo-boolops = { path = "neo-geo-boolops" }
 neo-geo-glam-interop = { path = "neo-geo-glam-interop" }
 neo-intersection = { path = "neo-intersection" }
 neo-line-segment = { path = "neo-line-segment" }
 neo-plane = { path = "neo-plane" }
 neo-ray = { path = "neo-ray" }
 neo-surface = { path = "neo-surface" }
-neo-tessellation = { path = "neo-tessellation" }
 
 # dev
-geo-svg = "0.5"
 rand = "0.8"
 serde_json = "1.0"
 
 [patch.crates-io]
-geo = { git = "https://github.com/RobWalt/geo", branch = "feat/falliable-boolops" }
+geo = { git = "https://github.com/RobWalt/geo", branch = "feat/spade-boolops" }
+geo-types = { git = "https://github.com/RobWalt/geo", branch = "feat/spade-boolops" }

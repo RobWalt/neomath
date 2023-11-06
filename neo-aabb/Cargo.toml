@@ -9,4 +9,3 @@ edition = "2021"
 geo.workspace = true
 neo-geo-glam-interop.workspace = true
 glam.workspace = true
-neo-float.workspace = true

@@ -1,3 +1,4 @@
+pub mod boolops;
 pub mod constructor;
 pub mod def;
 pub mod injection;

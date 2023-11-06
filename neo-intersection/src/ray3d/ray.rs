@@ -178,7 +178,7 @@ fn name() {
     let v = origin.cross(Vec3::X).normalize();
     let (d1, d2) = v.any_orthonormal_pair();
     let l1 = Ray3D::new(origin + d1 * 1234.581, d1);
-    let l2 = Ray3D::new(origin + d2 * 12314.31234, d2);
+    let l2 = Ray3D::new(origin + d2 * 12_314.312_5, d2);
 
     let intersection = l1.intersection(&l2);
     assert_eq!(intersection, RayRay3DIntersection::Intersection(origin))

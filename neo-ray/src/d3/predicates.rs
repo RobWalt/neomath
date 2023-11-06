@@ -23,9 +23,8 @@ impl Ray3D {
 fn is_point_on_line_works_endpoint() {
     let p = Vec3::X;
     let l = Ray3D::X;
-    assert_eq!(
+    assert!(
         l.is_point_on_ray(p),
-        true,
         "{l:?}, {p:?}, {}",
         l.distance_to_point(p)
     );
@@ -35,9 +34,8 @@ fn is_point_on_line_works_endpoint() {
 fn is_point_on_line_works_epsilon() {
     let p = Vec3::X * (1.0 + f32::EPSILON);
     let l = Ray3D::X;
-    assert_eq!(
+    assert!(
         l.is_point_on_ray(p),
-        true,
         "{l:?}, {p:?}, {}",
         l.distance_to_point(p)
     );
@@ -47,9 +45,8 @@ fn is_point_on_line_works_epsilon() {
 fn is_point_on_line_works_tilted() {
     let l = Ray3D::new(Vec3::ZERO, Vec3::new(1.0, 0.33, 1.0));
     let p = l.origin + l.direction() * 0.33;
-    assert_eq!(
+    assert!(
         l.is_point_on_ray(p),
-        true,
         "{l:?}, {p:?}, {}",
         l.distance_to_point(p)
     );

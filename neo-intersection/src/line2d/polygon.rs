@@ -31,7 +31,7 @@ impl NeoIntersectable<geo::Polygon<f32>> for LineSegment2D {
             .chain(
                 [0.0_f32, 1.0]
                     .into_iter()
-                    .zip(self.array().into_iter())
+                    .zip(self.array())
                     .filter(|(_, c)| rhs.intersects(&c.to_geo())),
             )
             .fold(vec![], |mut res, elem| {

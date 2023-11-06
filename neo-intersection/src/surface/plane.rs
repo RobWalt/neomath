@@ -19,7 +19,7 @@ impl NeoIntersectable<Plane> for NeoSurface {
     type Output = SurfacePlane3DIntersection;
 
     fn intersection(&self, rhs: &Plane) -> Self::Output {
-        let coord_sys_plane = CoordinateSystem::from_origin_and_plane(Vec3::ZERO, rhs.clone());
+        let coord_sys_plane = CoordinateSystem::from_origin_and_plane(Vec3::ZERO, *rhs);
         let inter = self.intersection(&coord_sys_plane);
         match inter {
             SurfaceCoordSys3DIntersection::None => SurfacePlane3DIntersection::None,

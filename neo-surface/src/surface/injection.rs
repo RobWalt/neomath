@@ -17,7 +17,7 @@ impl NeoSurface {
 
         let transform_linestring = move |ls: &geo::LineString<f32>| {
             ls.points()
-                .map(|p| geo::Coord::<f32>::from(p))
+                .map(geo::Coord::<f32>::from)
                 .map(|c| injection_func(c.to_glam()))
                 .collect::<Vec<_>>()
         };
