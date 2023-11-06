@@ -21,6 +21,17 @@ impl NeoSurface {
         }
     }
 
+    pub fn new_origin_at_zero(
+        coordinate_system: CoordinateSystem,
+        shape: geo::Polygon<f32>,
+    ) -> Self {
+        Self {
+            coordinate_system,
+            shape_origin: geo::Coord::zero(),
+            shape,
+        }
+    }
+
     pub fn new_origin_at_shape_center(
         coordinate_system: CoordinateSystem,
         shape: geo::Polygon<f32>,
