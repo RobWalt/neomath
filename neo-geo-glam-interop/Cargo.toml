@@ -8,4 +8,3 @@ edition = "2021"
 [dependencies]
 geo.workspace = true
 glam.workspace = true
-neo-float.workspace = true

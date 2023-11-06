@@ -5,7 +5,6 @@ members = [
   "neo-aabb",
   "neo-bounded",
   "neo-coordinate-system",
-  "neo-float",
   "neo-geo-glam-interop",
   "neo-intersection",
   "neo-line-segment",
@@ -24,7 +23,6 @@ spade = "2.2"
 neo-aabb = { path = "neo-aabb" }
 neo-bounded = { path = "neo-bounded" }
 neo-coordinate-system = { path = "neo-coordinate-system" }
-neo-float = { path = "neo-float" }
 neo-geo-glam-interop = { path = "neo-geo-glam-interop" }
 neo-intersection = { path = "neo-intersection" }
 neo-line-segment = { path = "neo-line-segment" }
