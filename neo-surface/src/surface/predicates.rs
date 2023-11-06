@@ -13,12 +13,7 @@ impl NeoSurface {
             // make exterior slightly bigger
             self.shape.scale(1.0 + f32::EPSILON).exterior().clone(),
             // make interiors slightly smaller
-            self.shape
-                .scale(1.0 - f32::EPSILON)
-                .interiors()
-                .into_iter()
-                .cloned()
-                .collect::<Vec<_>>(),
+            self.shape.scale(1.0 - f32::EPSILON).interiors().to_vec(),
         );
         let in_shape = shape.contains(&projected_point_xy);
         in_surface && in_shape

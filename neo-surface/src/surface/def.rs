@@ -1,5 +1,6 @@
 use neo_coordinate_system::CoordinateSystem;
 
+#[cfg(test)]
 pub const SURFACE_EPS: f32 = 0.000_1;
 
 #[derive(Debug, Clone, PartialEq)]

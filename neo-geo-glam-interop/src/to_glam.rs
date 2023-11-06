@@ -39,7 +39,7 @@ impl ConvertToGlam for geo::Polygon<f32> {
         (
             self.exterior().to_glam(),
             self.interiors()
-                .into_iter()
+                .iter()
                 .map(ConvertToGlam::to_glam)
                 .collect::<Vec<_>>(),
         )
@@ -78,7 +78,7 @@ impl ConvertToGlam for geo::Polygon<f64> {
         (
             self.exterior().to_glam(),
             self.interiors()
-                .into_iter()
+                .iter()
                 .map(ConvertToGlam::to_glam)
                 .collect::<Vec<_>>(),
         )

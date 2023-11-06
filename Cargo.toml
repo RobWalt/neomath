@@ -12,7 +12,6 @@ members = [
   "neo-plane",
   "neo-ray",
   "neo-surface",
-  "neo-tessellation",
 ]
 
 [workspace.dependencies]
@@ -32,7 +31,6 @@ neo-line-segment = { path = "neo-line-segment" }
 neo-plane = { path = "neo-plane" }
 neo-ray = { path = "neo-ray" }
 neo-surface = { path = "neo-surface" }
-neo-tessellation = { path = "neo-tessellation" }
 
 # dev
 rand = "0.8"

@@ -18,8 +18,7 @@ impl LineSegment2D {
         let ba = self.direction();
         let prod = pa.dot(ba) / ba.length_squared();
         let h = prod.clamp(0.0, 1.0);
-        let dist = pa.distance(h * ba);
-        dist
+        pa.distance(h * ba)
     }
 
     pub fn inject_scalar(&self, scalar: f32) -> Vec2 {

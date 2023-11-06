@@ -54,57 +54,57 @@ mod aabb_impls {
     #[test]
     fn internal_point_is_contained() {
         let aabb = AABB2D::new(Vec2::ZERO, Vec2::ONE);
-        assert_eq!(aabb.contains(Vec2::ONE * 0.5), true);
+        assert!(aabb.contains(Vec2::ONE * 0.5));
     }
 
     #[test]
     fn border_point_contained() {
         let aabb = AABB2D::new(Vec2::ZERO, Vec2::ONE);
-        assert_eq!(aabb.contains(Vec2::X * 0.5), true);
+        assert!(aabb.contains(Vec2::X * 0.5));
     }
 
     #[test]
     fn corner_point_contained() {
         let aabb = AABB2D::new(Vec2::ZERO, Vec2::ONE);
-        assert_eq!(aabb.contains(Vec2::ONE), true);
+        assert!(aabb.contains(Vec2::ONE));
     }
 
     #[test]
     fn flat_aabb_contains_point_on_line() {
         let aabb = AABB2D::new(Vec2::ZERO, Vec2::X);
-        assert_eq!(aabb.contains(Vec2::X * 0.5), true);
+        assert!(aabb.contains(Vec2::X * 0.5));
     }
 
     #[test]
     fn flat_aabb_contains_endpoint_of_line() {
         let aabb = AABB2D::new(Vec2::ZERO, Vec2::X);
-        assert_eq!(aabb.contains(Vec2::X), true);
+        assert!(aabb.contains(Vec2::X));
     }
 
     #[test]
     fn aabb_intersection_works() {
         let aabb1 = AABB2D::new(Vec2::ZERO, Vec2::ONE);
         let aabb2 = AABB2D::new(Vec2::ONE * 0.5, Vec2::ONE * 1.5);
-        assert_eq!(aabb1.intersects(&aabb2), true);
+        assert!(aabb1.intersects(&aabb2));
     }
 
     #[test]
     fn aabb_self_intersection_works() {
         let aabb = AABB2D::new(Vec2::ZERO, Vec2::ONE);
-        assert_eq!(aabb.intersects(&aabb), true);
+        assert!(aabb.intersects(&aabb));
     }
 
     #[test]
     fn flat_aabb_intersection_works() {
         let aabb1 = AABB2D::new(Vec2::ZERO, Vec2::X);
         let aabb2 = AABB2D::new(Vec2::X * 0.5, Vec2::X * 1.5);
-        assert_eq!(aabb1.intersects(&aabb2), true);
+        assert!(aabb1.intersects(&aabb2));
     }
 
     #[test]
     fn flat_aabb_self_intersection_works() {
         let aabb = AABB2D::new(Vec2::ZERO, Vec2::X);
-        assert_eq!(aabb.intersects(&aabb), true);
+        assert!(aabb.intersects(&aabb));
     }
 
     #[test]

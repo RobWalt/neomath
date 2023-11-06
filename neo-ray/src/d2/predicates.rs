@@ -22,9 +22,8 @@ impl Ray2D {
 fn is_point_on_line_works_endpoint() {
     let p = Vec2::X;
     let l = Ray2D::X;
-    assert_eq!(
+    assert!(
         l.is_point_on_ray(p),
-        true,
         "{l:?}, {p:?}, {}",
         l.distance_to_point(p)
     );
@@ -34,9 +33,8 @@ fn is_point_on_line_works_endpoint() {
 fn is_point_on_line_works_epsilon() {
     let p = Vec2::X * (1.0 + f32::EPSILON);
     let l = Ray2D::X;
-    assert_eq!(
+    assert!(
         l.is_point_on_ray(p),
-        true,
         "{l:?}, {p:?}, {}",
         l.distance_to_point(p)
     );
@@ -46,9 +44,8 @@ fn is_point_on_line_works_epsilon() {
 fn is_point_on_line_works_tilted() {
     let l = Ray2D::new(Vec2::ZERO, Vec2::new(1.0, 0.33));
     let p = l.origin + l.direction() * 0.33;
-    assert_eq!(
+    assert!(
         l.is_point_on_ray(p),
-        true,
         "{l:?}, {p:?}, {}",
         l.distance_to_point(p)
     );

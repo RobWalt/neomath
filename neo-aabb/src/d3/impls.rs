@@ -52,75 +52,75 @@ mod aabb_impls {
     #[test]
     fn internal_point_is_contained() {
         let aabb = AABB3D::new(Vec3::ZERO, Vec3::ONE);
-        assert_eq!(aabb.contains(Vec3::ONE * 0.5), true);
+        assert!(aabb.contains(Vec3::ONE * 0.5));
     }
 
     #[test]
     fn border_point_contained() {
         let aabb = AABB3D::new(Vec3::ZERO, Vec3::ONE);
-        assert_eq!(aabb.contains(Vec3::X * 0.5), true);
+        assert!(aabb.contains(Vec3::X * 0.5));
     }
 
     #[test]
     fn corner_point_contained() {
         let aabb = AABB3D::new(Vec3::ZERO, Vec3::ONE);
-        assert_eq!(aabb.contains(Vec3::ONE), true);
+        assert!(aabb.contains(Vec3::ONE));
     }
 
     #[test]
     fn flat_2d_aabb_contains_point_on_face() {
         let aabb = AABB3D::new(Vec3::ZERO, Vec3::X + Vec3::Y);
-        assert_eq!(aabb.contains((Vec3::X + Vec3::Y) * 0.5), true);
+        assert!(aabb.contains((Vec3::X + Vec3::Y) * 0.5));
     }
 
     #[test]
     fn flat_2d_aabb_contains_point_on_line() {
         let aabb = AABB3D::new(Vec3::ZERO, Vec3::X + Vec3::Y);
-        assert_eq!(aabb.contains(Vec3::X * 0.5), true);
+        assert!(aabb.contains(Vec3::X * 0.5));
     }
 
     #[test]
     fn flat_2d_aabb_contains_point_on_corner() {
         let aabb = AABB3D::new(Vec3::ZERO, Vec3::X + Vec3::Y);
-        assert_eq!(aabb.contains(Vec3::X), true);
+        assert!(aabb.contains(Vec3::X));
     }
 
     #[test]
     fn flat_aabb_contains_point_on_line() {
         let aabb = AABB3D::new(Vec3::ZERO, Vec3::X);
-        assert_eq!(aabb.contains(Vec3::X * 0.5), true);
+        assert!(aabb.contains(Vec3::X * 0.5));
     }
 
     #[test]
     fn flat_aabb_contains_endpoint_of_line() {
         let aabb = AABB3D::new(Vec3::ZERO, Vec3::X);
-        assert_eq!(aabb.contains(Vec3::X), true);
+        assert!(aabb.contains(Vec3::X));
     }
 
     #[test]
     fn aabb_intersection_works() {
         let aabb1 = AABB3D::new(Vec3::ZERO, Vec3::ONE);
         let aabb2 = AABB3D::new(Vec3::ONE * 0.5, Vec3::ONE * 1.5);
-        assert_eq!(aabb1.intersects(&aabb2), true);
+        assert!(aabb1.intersects(&aabb2));
     }
 
     #[test]
     fn aabb_self_intersection_works() {
         let aabb = AABB3D::new(Vec3::ZERO, Vec3::ONE);
-        assert_eq!(aabb.intersects(&aabb), true);
+        assert!(aabb.intersects(&aabb));
     }
 
     #[test]
     fn flat_aabb_intersection_works() {
         let aabb1 = AABB3D::new(Vec3::ZERO, Vec3::X);
         let aabb2 = AABB3D::new(Vec3::X * 0.5, Vec3::X * 1.5);
-        assert_eq!(aabb1.intersects(&aabb2), true);
+        assert!(aabb1.intersects(&aabb2));
     }
 
     #[test]
     fn flat_aabb_self_intersection_works() {
         let aabb = AABB3D::new(Vec3::ZERO, Vec3::X);
-        assert_eq!(aabb.intersects(&aabb), true);
+        assert!(aabb.intersects(&aabb));
     }
 
     #[test]

@@ -39,8 +39,7 @@ fn point_case_analysis(surface: &NeoSurface, point: Vec3) -> SurfaceRay3DInterse
 fn project_ray(surface: &NeoSurface, ray: &Ray3D) -> Ray2D {
     let offset_ray_origin = surface.project_point_xy(ray.origin).to_glam();
     let offset_ray_direction = surface.project_point_xy(ray.direction).to_glam();
-    let ray2d = Ray2D::new(offset_ray_origin, offset_ray_direction);
-    ray2d
+    Ray2D::new(offset_ray_origin, offset_ray_direction)
 }
 
 fn contained_ray_case_analysis(surface: &NeoSurface, ray: Ray3D) -> SurfaceRay3DIntersection {

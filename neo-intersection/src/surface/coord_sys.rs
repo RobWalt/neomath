@@ -3,7 +3,7 @@ use neo_coordinate_system::CoordinateSystem;
 use neo_ray::d3::def::Ray3D;
 use neo_surface::surface::def::NeoSurface;
 
-use crate::coord_sys::coord_sys::CoordSysCoordSysIntersection;
+use crate::coord_sys::other_coord_sys::CoordSysCoordSysIntersection;
 use crate::line_intersection_parts::Line3DIntersectionParts;
 use crate::surface::ray::SurfaceRay3DIntersection;
 use crate::trait_def::NeoIntersectable;
@@ -122,7 +122,7 @@ mod surface_coord_sys {
     #[test]
     fn surface_intersection_works() {
         let surface = standard_surface_rect();
-        let c = surface.coordinate_system.clone();
+        let c = surface.coordinate_system;
 
         let inter = surface.intersection(&c);
         assert_eq!(inter, SurfaceCoordSys3DIntersection::Surface(surface));

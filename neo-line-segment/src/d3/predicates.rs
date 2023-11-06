@@ -25,9 +25,8 @@ impl LineSegment3D {
 fn is_point_on_line_endpoint_works() {
     let p = Vec3::X;
     let l = LineSegment3D::UNIT_X;
-    assert_eq!(
+    assert!(
         l.is_point_on_line(p),
-        true,
         "{l:?}, {p:?}, {}",
         l.distance_to_point(p)
     );
@@ -37,9 +36,8 @@ fn is_point_on_line_endpoint_works() {
 fn is_point_on_line_epsilon_works() {
     let p = Vec3::X * (1.0 + f32::EPSILON);
     let l = LineSegment3D::UNIT_X;
-    assert_eq!(
+    assert!(
         l.is_point_on_line(p),
-        true,
         "{l:?}, {p:?}, {}",
         l.distance_to_point(p)
     );
@@ -49,9 +47,8 @@ fn is_point_on_line_epsilon_works() {
 fn is_point_on_line_tilted_works() {
     let l = LineSegment3D::new(Vec3::ZERO, Vec3::new(1.0, 0.33, 0.33));
     let p = l.src + l.direction() * 0.33;
-    assert_eq!(
+    assert!(
         l.is_point_on_line(p),
-        true,
         "{l:?}, {p:?}, {}",
         l.distance_to_point(p)
     );

@@ -20,6 +20,6 @@ impl NeoFloat for f64 {
         a as Self
     }
     fn to_raw_f64(self) -> f64 {
-        self as f64
+        self
     }
 }

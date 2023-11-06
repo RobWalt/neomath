@@ -70,7 +70,7 @@ fn aabb_line_case_analysis(
             unreachable!("{text}")
         }
         LineLine2DIntersection::CollinearOverlap(_) => {
-            RayLine2DIntersection::CollinearOverlap(rhs.clone())
+            RayLine2DIntersection::CollinearOverlap(*rhs)
         }
         LineLine2DIntersection::Intersection(i) => RayLine2DIntersection::Intersection(i),
     }
