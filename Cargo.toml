@@ -11,7 +11,9 @@ members = [
   "neo-plane",
   "neo-ray",
   "neo-surface",
-  "neo-utils"
+  "neo-utils",
+
+  "neomath",
 ]
 
 [workspace.dependencies]
@@ -19,6 +21,8 @@ members = [
 geo = { version = "0.27" }
 glam = "0.24"
 spade = "2.2"
+
+neomath = { path = "neomath" }
 
 # workspace crates
 neo-aabb = { path = "neo-aabb" }
