@@ -1,9 +1,10 @@
 use neo_coordinate_system::CoordinateSystem;
+use serde::{Deserialize, Serialize};
 
 #[cfg(test)]
 pub const SURFACE_EPS: f32 = 0.000_1;
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct NeoSurface {
     /// Coordinate system the 3D surface lives in
     pub coordinate_system: CoordinateSystem,

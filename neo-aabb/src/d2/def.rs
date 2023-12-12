@@ -1,6 +1,7 @@
 use glam::Vec2;
+use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, Copy, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
 pub struct AABB2D {
     pub min: Vec2,
     pub max: Vec2,

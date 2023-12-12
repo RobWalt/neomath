@@ -1,6 +1,7 @@
 use glam::Vec2;
+use serde::{Deserialize, Serialize};
 
-#[derive(PartialEq, Clone, Copy, Debug)]
+#[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
 pub struct LineSegment2D {
     pub src: Vec2,
     pub dst: Vec2,

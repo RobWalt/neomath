@@ -8,6 +8,7 @@ edition = "2021"
 [dependencies]
 geo.workspace = true
 glam = { workspace = true, features = ["approx"]}
+serde.workspace = true
 neo-geo-glam-interop.workspace = true
 neo-ray.workspace = true
 neo-aabb.workspace = true

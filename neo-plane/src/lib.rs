@@ -1,8 +1,9 @@
 use glam::{Quat, Vec3};
+use serde::{Deserialize, Serialize};
 
 const PLANE_EPS: f32 = 0.000_1;
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
 pub struct Plane {
     pub local_x: Vec3,
     pub local_y: Vec3,

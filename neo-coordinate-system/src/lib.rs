@@ -1,9 +1,10 @@
 use glam::Vec3;
 use neo_plane::Plane;
+use serde::{Deserialize, Serialize};
 
 pub const COORDINATE_SYSTEM_EPS: f32 = 0.000_1;
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
 pub struct CoordinateSystem {
     pub plane: Plane,
     pub origin: Vec3,

@@ -14,3 +14,4 @@ neo-coordinate-system.workspace = true
 neo-line-segment.workspace = true
 neo-plane.workspace = true
 neo-ray.workspace = true
+serde.workspace = true

@@ -8,3 +8,4 @@ edition = "2021"
 [dependencies]
 glam.workspace = true
 neo-plane.workspace = true
+serde.workspace = true
