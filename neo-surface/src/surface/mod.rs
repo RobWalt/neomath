@@ -7,3 +7,4 @@ pub mod predicates;
 pub mod projection;
 pub mod properties;
 pub mod rotation;
+pub mod triangulate;

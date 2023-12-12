@@ -11,11 +11,12 @@ members = [
   "neo-plane",
   "neo-ray",
   "neo-surface",
+  "neo-utils"
 ]
 
 [workspace.dependencies]
 # needed
-geo = { version = "0.26" }
+geo = { version = "0.27" }
 glam = "0.24"
 spade = "2.2"
 
@@ -29,6 +30,7 @@ neo-line-segment = { path = "neo-line-segment" }
 neo-plane = { path = "neo-plane" }
 neo-ray = { path = "neo-ray" }
 neo-surface = { path = "neo-surface" }
+neo-utils = { path = "neo-utils" }
 
 # dev
 rand = "0.8"
@@ -36,4 +38,3 @@ serde_json = "1.0"
 
 [patch.crates-io]
 geo = { git = "https://github.com/RobWalt/geo", branch = "feat/spade-boolops" }
-geo-types = { git = "https://github.com/RobWalt/geo", branch = "feat/spade-boolops" }

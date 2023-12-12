@@ -62,7 +62,7 @@ impl NeoSurface {
             .shape
             .interiors()
             .iter()
-            .map(|ls| invert_linestring_winding(ls))
+            .map(invert_linestring_winding)
             .collect::<Vec<_>>();
         Self {
             shape: geo::Polygon::new(ext, ints),
